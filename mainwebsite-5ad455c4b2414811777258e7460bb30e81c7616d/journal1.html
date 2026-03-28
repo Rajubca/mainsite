@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SHIVA | A Curated Journal of Excellence - The M Path</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&amp;family=Inter:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="css/journal1.css" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-forest selection:text-white">
+<!-- Fixed UI Layer -->
+<div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
+<!-- To switch menu styles, change "theme-premium" to "theme-cyberpunk" or "theme-minimal" -->
+    <div class="map-container theme-premium relative">
+<!-- Main Logo Link: Positioned top middle, exactly between the M peaks -->
+<a class="absolute -top-3 left-1/2 -translate-x-1/2 z-[30] text-center bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg hover:bg-slate-800 transition-all duration-[1200ms] text-slate-100 hover:scale-110 hover:border-yellow-500/50" href="../index.html">
+<h1 class="font-serif text-lg tracking-tight leading-none pt-0.5" style="letter-spacing: 0.1em;">SHIVA</h1>
+</a>
+<!-- SVG lines drawing the miniature M -->
+<svg class="map-lines" viewbox="0 0 160 120">
+<!-- Smooth line drawing the M -->
+<path class="transition-all duration-[1200ms]" d="M 16 108 L 16 12 L 80 108 L 144 12 L 144 108" fill="none" stroke="rgba(234, 179, 8, 0.2)" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- 9 Points -->
+<div class="map-dot" data-label="The Gateway" id="map-dot-0"></div>
+<div class="map-dot" data-label="Our Vision" id="map-dot-1"></div>
+<div class="map-dot" data-label="Build the Future" id="map-dot-2"></div>
+<div class="map-dot" data-label="AI Intelligence" id="map-dot-3"></div>
+<div class="map-dot" data-label="Digital Engineering" id="map-dot-4"></div>
+<div class="map-dot" data-label="Web Studio" id="map-dot-5"></div>
+<div class="map-dot" data-label="Balance &amp; Wellness" id="map-dot-6"></div>
+<div class="map-dot" data-label="Secure Your Future" id="map-dot-7"></div>
+<div class="map-dot" data-label="Begin Your Journey" id="map-dot-8"></div>
+<!-- Scroll text at the bottom center of the map, below the M dip -->
+<div class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.2em] text-yellow-500/90 font-bold bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg transition-all duration-[1200ms] z-[30] group-hover/nav:-translate-y-1 hover:text-yellow-400 cursor-default flex items-center gap-1">
+<span>Scroll</span> <span class="material-symbols-outlined text-[10px]">mouse</span> <span>to Navigate</span>
+</div>
+</div>
+</div>
+<!-- Scroll To Top Action Button -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-forest text-slate-100 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 z-[100] opacity-0 pointer-events-none translate-y-4" id="scroll-to-top">
+<span class="material-symbols-outlined text-2xl">arrow_upward</span>
+</button>
+<!-- The scrolling proxy (creates natural page height for 9 sections) -->
+<div id="scroll-proxy"></div>
+<!-- The sliding 2D world -->
+<div id="canvas-world">
+<!-- Station 1: Bottom Left (Start) -->
+<section class="station" id="station-1"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 backdrop-blur-md border border-blue-500/20 rounded-2xl p-12 text-center flex flex-col items-center justify-center relative overflow-hidden"><div class="relative z-10">
+<span class="eyebrow">Shiva Services — Est. 2024</span>
+<h2 class="display text-gradient-gold italic mb-5">The Gateway</h2>
+<p class="body-text max-w-[580px] mx-auto mb-10">
+        Building growth across industries. We provide premium solutions across technology, finance, infrastructure, and wellness — a single partner for every ambition.
+      </p>
+<div class="flex gap-4 justify-center flex-wrap mb-12">
+<a class="btn-primary" href="#">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-base">explore</span>
+          Explore Services
+        </a>
+<a class="btn-ghost" href="#">Start Consultation</a>
+</div>
+<div class="divider"></div>
+<div class="flex gap-4 justify-center flex-wrap">
+<span class="pill"><span class="material-symbols-outlined">hub</span>Technology</span>
+<span class="pill"><span class="material-symbols-outlined">account_balance</span>Finance</span>
+<span class="pill"><span class="material-symbols-outlined">foundation</span>Infrastructure</span>
+<span class="pill"><span class="material-symbols-outlined">spa</span>Wellness</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 2: Middle Left (New) -->
+<section class="station" id="station-2"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 backdrop-blur-sm border-l-4 border-blue-500 p-10 rounded-r-2xl shadow-[0_0_30px_rgba(59,130,246,0.1)]"><h2 class="title-xl" class="title-xl italic mb-8">Our Vision</h2>
+<div class="split mb-10">
+<div>
+<p class="text-[10px] tracking-[0.2em] uppercase text-[#eab308] mb-3">Mission</p>
+<p class="body-text">To combine traditional services with modern technological advancements, ensuring robust and sustainable growth across all sectors we touch.</p>
+</div>
+<div>
+<p class="text-[10px] tracking-[0.2em] uppercase text-[#3b82f6] mb-3">Vision</p>
+<p class="body-text">By emphasizing innovation and reliability, we aim to be the foundational partner for enterprises navigating the complexities of tomorrow's market.</p>
+</div>
+</div>
+<div class="divider"></div>
+<div class="grid-3">
+<div class="service-card" class="service-card text-center">
+<span class="material-symbols-outlined icon" class="material-symbols-outlined icon block text-4xl text-center">lightbulb</span>
+<h6>Innovation</h6>
+<p>Pioneering new methodologies and frameworks.</p>
+</div>
+<div class="service-card" class="service-card text-center">
+<span class="material-symbols-outlined icon" class="material-symbols-outlined icon block text-4xl text-center text-[#3b82f6]">verified_user</span>
+<h6>Trust</h6>
+<p>Built on absolute transparency and integrity.</p>
+</div>
+<div class="service-card" class="service-card text-center">
+<span class="material-symbols-outlined icon" class="material-symbols-outlined icon block text-4xl text-center text-[#94a3b8]">trending_up</span>
+<h6>Growth</h6>
+<p>Sustainable and exponential scaling.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 3: Top Left -->
+<section class="station" id="station-3"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content relative overflow-hidden rounded-2xl border border-blue-500/20 bg-slate-800 backdrop-blur shadow-2xl"><div class="relative z-10">
+<div class="flex items-baseline justify-between mb-8 pb-5 border-b border-[rgba(148,163,184,0.1)]">
+<h2 class="title-xl" class="title-xl italic">Build the Future</h2>
+<span class="eyebrow" class="eyebrow m-0">Infrastructure</span>
+</div>
+<div class="split">
+<div>
+<p class="body-text mb-8">We design and build the physical frameworks of the future. From concept to concrete, our project management ensures resilience and aesthetic excellence.</p>
+<div>
+<div class="icon-row"><span class="material-symbols-outlined">home_work</span><span>Residential Construction</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">domain</span><span>Commercial Construction</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">architecture</span><span>Renovation &amp; Design</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">engineering</span><span>End-to-End Project Management</span></div>
+</div>
+<div class="mt-8">
+<a class="btn-primary" href="#">Request a Quote</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="img-overlay" class="img-overlay h-[220px]">
+<img alt="Construction" src="images/7014b225e5ae3b0512bf68906380f56f.jpg"/>
+</div>
+<div class="img-overlay" class="img-overlay h-[220px] mt-8">
+<img alt="Blueprint" src="images/a6a5de9becaa7c0ed40eae0a8f5b5b69.jpg"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 4: Diagonal Middle Left (New) -->
+<section class="station" id="station-4"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 text-slate-100 p-12 rounded-3xl border border-yellow-500/30 relative overflow-hidden shadow-[0_0_30px_rgba(234,179,8,0.15)]"><div class="split relative z-10">
+<div>
+<span class="eyebrow">Intelligence</span>
+<h2 class="title-xl" class="title-xl mb-6">AI Market<br/>Intelligence</h2>
+<p class="body-text mb-8">Deploying neural networks and algorithmic research to predict market trends. We turn raw financial data into actionable, automated strategies.</p>
+<div class="flex flex-col gap-4">
+<div class="service-card" class="service-card border-[rgba(59,130,246,0.2)]">
+<div class="flex items-center gap-2.5 mb-2">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[18px] text-[#3b82f6]">show_chart</span>
+<h6 class="text-[1.1rem]">AI Prediction Tools</h6>
+</div>
+<p>Advanced forecasting models for equities and commodities.</p>
+</div>
+<div class="service-card" class="service-card border-[rgba(234,179,8,0.2)]">
+<div class="flex items-center gap-2.5 mb-2">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[18px] text-[#eab308]">memory</span>
+<h6 class="text-[1.1rem]">Algorithmic Trading</h6>
+</div>
+<p>High-frequency automated execution strategies.</p>
+</div>
+<div class="service-card">
+<div class="flex items-center gap-2.5 mb-2">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[18px] text-[#94a3b8]">analytics</span>
+<h6 class="text-[1.1rem]">Data Analytics</h6>
+</div>
+<p>Deep structural analysis of market sentiment.</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="img-overlay" class="img-overlay h-[260px]">
+<img alt="Stock Chart" src="images/41ee7ffa4a0d70a4f2ee198046ec7f3b.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-br from-[rgba(74,144,217,0.2)] to-transparent to-[60%] pointer-events-none"></div>
+</div>
+<div class="grid-3 grid-cols-3">
+<div class="stat-card">
+<p class="label">Accuracy</p>
+<p class="value">94<span class="text-base text-[#64748b]">%</span></p>
+</div>
+<div class="stat-card">
+<p class="label">Markets</p>
+<p class="value">12<span class="text-base text-[#64748b]">+</span></p>
+</div>
+<div class="stat-card">
+<p class="label">Active Bots</p>
+<p class="value">48</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 5: Center Bottom -->
+<section class="station" id="station-5"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 p-12 rounded-xl border border-blue-500/30 shadow-2xl relative overflow-hidden"><div class="relative z-10">
+<span class="eyebrow">Digital Engineering</span>
+<h2 class="title-xl" class="title-xl italic mb-4">Systems That Scale</h2>
+<p class="body-text max-w-[700px] mb-10">We engineer bespoke digital tools tailored to specific enterprise needs. From robust backend architectures to seamless AI integrations, we build systems that grow with you.</p>
+<div class="grid-4">
+<div class="service-card">
+<span class="material-symbols-outlined icon">dns</span>
+<h6>Enterprise Software</h6>
+<p>Scalable platforms for massive organizational loads.</p>
+</div>
+<div class="service-card">
+<span class="material-symbols-outlined icon">smart_button</span>
+<h6>Automation</h6>
+<p>Streamlining repetitive tasks with intelligent scripts.</p>
+</div>
+<div class="service-card">
+<span class="material-symbols-outlined icon">psychology</span>
+<h6>AI Integrations</h6>
+<p>Embedding large language models into workflows.</p>
+</div>
+<div class="service-card">
+<span class="material-symbols-outlined icon">construction</span>
+<h6>Custom Tools</h6>
+<p>Dashboards, CRM extensions, and specialized utilities.</p>
+</div>
+</div>
+<div class="divider"></div>
+<div class="flex gap-4 flex-wrap items-center">
+<a class="btn-primary" href="#">Start a Project</a>
+<span class="font-serif text-[1.1rem] italic text-[#64748b]">From MVP to enterprise — we cover it all.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 6: Diagonal Middle Right (New) -->
+<section class="station" id="station-6"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 text-white rounded-3xl overflow-hidden shadow-2xl relative border border-slate-700"><div class="flex flex-col gap-3 mb-8">
+<div class="icon-row"><span class="material-symbols-outlined">web</span><span>High-performance website design</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">apps</span><span>Scalable web applications</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">phone_iphone</span><span>Native &amp; hybrid mobile apps</span></div>
+<div class="icon-row"><span class="material-symbols-outlined">cloud</span><span>SaaS platform architecture</span></div>
+</div>
+<a class="btn-ghost" href="#">View Portfolio</a>
+<div class="relative flex items-center justify-center p-8 bg-white/5">
+<!-- Grid overlay -->
+<div class="absolute inset-0 opacity-5 bg-[linear-gradient(rgba(255,255,255,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.3)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none"></div>
+<div class="relative w-[min(220px,45vw)] aspect-[9/16] bg-[#080c14] rounded-3xl border-2 border-white/15 overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+<img alt="Mobile UI" src="images/3cfe39b6a41ac4e7fd12221e47906177.jpg" class="w-full h-full object-cover opacity-70"/>
+<div class="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[#080c14] to-transparent"></div>
+<div class="absolute bottom-5 left-4 right-4 p-3 bg-white/5 backdrop-blur-md rounded-[10px] border border-white/10">
+<p class="text-[11px] font-medium mb-1.5">Loading UI</p>
+<div class="h-[3px] bg-white/10 rounded-sm overflow-hidden">
+<div class="w-[68%] h-full bg-[#3b82f6] rounded-sm animate-[loading-bar_2s_ease-in-out_infinite]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 7: Top Right -->
+<section class="station" id="station-7"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content rounded-3xl overflow-hidden relative border border-yellow-500/30 shadow-[0_0_30px_rgba(234,179,8,0.1)]"><!-- Soft gold wave -->
+<svg preserveaspectratio="none" class="absolute bottom-0 left-0 w-full pointer-events-none opacity-15" viewbox="0 0 1440 120">
+<path d="M0,60L60,65C120,70,240,80,360,75C480,70,600,50,720,50C840,50,960,70,1080,72C1200,74,1320,62,1380,55L1440,48L1440,120L0,120Z" fill="var(--gold)"></path>
+</svg>
+<div class="relative z-10 p-[clamp(2rem,5vw,4rem)]">
+<span class="eyebrow">Vitality</span>
+<h2 class="title-xl" style="margin-bottom:1.25rem;">Balance &amp; Wellness</h2>
+<p class="body-text max-w-[620px] mb-10">Holistic strategy is not an indulgence — it is a prerequisite for intellectual endurance. We facilitate peak human performance through ancient wisdom translated for the modern executive.</p>
+<div class="grid-3">
+<div class="wellness-item" class="wellness-item flex items-center gap-3.5 p-4 border border-[rgba(201,168,76,0.15)] rounded-2xl bg-[rgba(201,168,76,0.05)] transition-all duration-300 ease-in-out">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[32px] text-[#eab308]">self_improvement</span>
+<div><p class="text-[13px] font-medium mb-0.5">Yoga Training</p><p class="text-[11px] text-[#64748b]">Daily &amp; corporate</p></div>
+</div>
+<div class="wellness-item" class="wellness-item flex items-center gap-3.5 p-4 border border-[rgba(74,144,217,0.15)] rounded-2xl bg-[rgba(74,144,217,0.05)] transition-all duration-300 ease-in-out">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[32px] text-[#3b82f6]">spa</span>
+<div><p class="text-[13px] font-medium mb-0.5">Meditation</p><p class="text-[11px] text-[#64748b]">Guided programs</p></div>
+</div>
+<div class="wellness-item" class="wellness-item flex items-center gap-3.5 p-4 border border-[rgba(148,163,184,0.1)] rounded-2xl bg-[rgba(15,23,42,0.5)] transition-all duration-300 ease-in-out">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[32px] text-[#94a3b8]">groups</span>
+<div><p class="text-[13px] font-medium mb-0.5">Corporate Sessions</p><p class="text-[11px] text-[#64748b]">Team wellness</p></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 8: Middle Right (New) -->
+<section class="station" id="station-8"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-800 p-12 rounded-2xl border-t-4 border-yellow-500 shadow-[0_0_30px_rgba(234,179,8,0.15)]"><div class="relative z-10">
+<span class="eyebrow">Protection &amp; Asset</span>
+<h2 class="title-xl" style="font-style:italic;margin-bottom:2.5rem;">Secure Your Future</h2>
+<div class="grid-2">
+<div class="secure-card" class="secure-card pl-6 border-l-2 border-[rgba(234,179,8,0.2)] pb-6 transition-colors duration-400 ease-in-out">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[44px] text-[#3b82f6] mb-4 block">account_balance</span>
+<h3 class="title-md" class="title-md mb-4">Insurance &amp; Investment</h3>
+<p class="body-text mb-6 text-[0.9rem]">Authorized LIC insurance consulting to safeguard legacies. Comprehensive investment planning ensuring capital preservation and compound growth across generations.</p>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[#eab308]">— LIC Insurance</span>
+<span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[#eab308]">— Financial Planning</span>
+</div>
+</div>
+<div class="secure-card" class="secure-card pl-6 border-l-2 border-[rgba(59,130,246,0.2)] pb-6 transition-colors duration-400 ease-in-out">
+<span class="material-symbols-outlined" class="material-symbols-outlined text-[44px] text-[#eab308] mb-4 block">real_estate_agent</span>
+<h3 class="title-md" class="title-xl italic mb-4">Property &amp; Real Estate</h3>
+<p class="body-text mb-6 text-[0.9rem]">Strategic property buying, selling, and real estate advisory. We identify high-yield commercial and residential opportunities in emerging corridors.</p>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[#3b82f6]">— Real Estate Advisory</span>
+<span class="text-[10px] font-medium tracking-[0.15em] uppercase text-[#3b82f6]">— Buying &amp; Selling</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Station 9: Bottom Right (End) -->
+<section class="station" id="station-9"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<div class="station-content bg-slate-900 text-slate-100 p-12 rounded-3xl border border-blue-500/20 shadow-[0_0_50px_rgba(59,130,246,0.2)] relative overflow-hidden"><div class="relative z-10">
+<div class="text-center mb-12">
+<span class="eyebrow justify-center flex">Final Station</span>
+<h2 class="title-xl" class="title-xl italic mb-4">Begin Your Journey</h2>
+<p class="body-text max-w-[480px] mx-auto">Connecting vision with execution. Reach out for a consultation to transform your enterprise operations.</p>
+</div>
+<div class="split gap-12">
+<div>
+<div class="body-text mb-8">
+<p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Direct Line</p>
+<a class="contact-link" href="tel:+918000951195">+91 8000 951 195</a>
+</div>
+<div class="body-text mb-8">
+<p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Electronic Mail</p>
+<a class="contact-link" href="mailto:rp_ai@shivaservices.co.in" class="contact-link text-[clamp(0.85rem,1.5vw,1.1rem)]">rp_ai@shivaservices.co.in</a>
+</div>
+<div class="divider"></div>
+<a class="btn-whatsapp" href="https://wa.me/918000951195">
+<svg viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+            Chat on WhatsApp
+          </a>
+</div>
+<div>
+<div class="bg-white/5 border border-[rgba(148,163,184,0.1)] rounded-2xl p-8">
+<div class="form-group">
+<label for="c-name">Name</label>
+<input id="c-name" placeholder="Your full name" type="text"/>
+</div>
+<div class="form-group">
+<label for="c-email">Email</label>
+<input id="c-email" placeholder="address@domain.com" type="email"/>
+</div>
+<div class="form-group">
+<label for="c-msg">Inquiry</label>
+<textarea id="c-msg" placeholder="How can we assist your enterprise?" rows="4"></textarea>
+</div>
+<button class="btn-primary" onclick="handleSubmit(this)" class="btn-primary w-full justify-center rounded-xl">
+              Initiate Transmission
+            </button>
+<div id="form-status" class="hidden mt-4 text-center text-[13px] text-[#eab308]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script src="js/journal1.js"></script></body></html>
