@@ -76,6 +76,11 @@ function initJournal() {
             // Apply transform to move the entire world canvas
             world.style.transform = `translate3d(${currentX}vw, ${currentY}vh, 0)`;
 
+            // Update right-side scroll slider
+            if (scrollProgressBar) {
+                scrollProgressBar.style.height = `${progress * 100}%`;
+            }
+
             // Update FAB visibility
             updateScrollToTopVisibility(progress);
 
@@ -168,9 +173,10 @@ function initJournal() {
 
         // Scroll-To-Top button logic (Custom slow scroll)
         const scrollToTopBtn = document.getElementById('scroll-to-top');
+        const scrollProgressBar = document.getElementById('scroll-progress-bar');
         scrollToTopBtn.addEventListener('click', () => {
             const startY = window.scrollY;
-            const duration = 1200; // 1.5 seconds scroll duration
+            const duration = 3000; // 1.5 seconds scroll duration
             let startTime = null;
 
             function animation(currentTime) {
@@ -308,7 +314,7 @@ function initJournal() {
 
                 const startY = window.scrollY;
                 const distance = targetScroll - startY;
-                const duration = 1200; // 2 seconds
+                const duration = 3000; // 2 seconds
                 let startTime = null;
 
                 function animation(currentTime) {
