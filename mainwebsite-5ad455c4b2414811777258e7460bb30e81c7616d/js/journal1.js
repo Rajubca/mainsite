@@ -293,7 +293,7 @@ function initJournal() {
         function renderLoop() {
             // Linear Interpolation: move current 8% closer to target every frame
             // This creates a very smooth "gliding" effect between stations
-            currentScroll += (targetScroll - currentScroll) * 0.015;
+            currentScroll += (targetScroll - currentScroll) * 0.1;
 
             // Only update the DOM if the values are noticeably different
             if (Math.abs(targetScroll - currentScroll) > 0.5) {

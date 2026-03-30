@@ -381,7 +381,7 @@
   letter-spacing: 1px;
   border-radius: 999px;
   text-decoration: none;
-  transition: all 0.3s ease;
+
 }
 .btn-primary:hover { transform: scale(1.05); }
 
@@ -398,7 +398,7 @@
   letter-spacing: 1px;
   border-radius: 999px;
   text-decoration: none;
-  transition: all 0.3s ease;
+
 }
 .btn-ghost:hover { background: rgba(234, 179, 8, 0.1); }
 
@@ -415,7 +415,7 @@
   letter-spacing: 1px;
   border-radius: 999px;
   text-decoration: none;
-  transition: all 0.3s ease;
+
 }
 .btn-whatsapp svg { width: 18px; height: 18px; fill: currentColor; }
 .btn-whatsapp:hover { background: #1ebe5d; transform: scale(1.05); }
@@ -446,7 +446,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  transition: all 0.3s ease;
+
 }
 .service-card:hover { transform: translateY(-5px); border-color: var(--gold-dim); }
 .service-card h6 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; margin-bottom: 0.5rem; color: #f8fafc; }
