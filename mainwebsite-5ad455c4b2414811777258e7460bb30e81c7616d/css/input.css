@@ -22,10 +22,11 @@
             background-color: theme('colors.parchment');
             color: theme('colors.ink');
             line-height: 1.8;
-            overflow-x: hidden;
+            overflow: hidden;
             margin: 0;
             padding: 0;
             width: 100vw;
+            height: 100vh;
         }
 
         /* The giant canvas that holds all our content stations */
@@ -50,8 +51,8 @@
         /* Ambient floating orbs in the background */
         #canvas-world::before {
             content: '';
-            position: absolute;
-            top: 0; left: 0; width: 500vw; height: 400vh;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: -1;
@@ -59,7 +60,7 @@
 
         /* Each section of the M */
         .station {
-            position: absolute;
+            /* position: absolute; removed */
             width: 100vw;
             height: 100vh;
             display: flex;
