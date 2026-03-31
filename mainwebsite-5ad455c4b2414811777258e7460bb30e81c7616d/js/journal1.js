@@ -1,82 +1,75 @@
 function initJournal() {
-    const world = document.getElementById('main-scroller');
-    const scrollProgressBar = document.getElementById('scroll-progress-bar');
-    const scrollToTopBtn = document.getElementById('scroll-to-top');
-
     const dots = Array.from(document.querySelectorAll('.map-dot'));
     const stations = Array.from(document.querySelectorAll('.station'));
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    const scrollProgressBar = document.getElementById('scroll-progress-bar');
 
-    // Intersection Observer for sections
-    const observerOptions = {
-        root: world,
-        rootMargin: '0px',
-        threshold: 0.15 // Trigger when 20% of the section is visible
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const index = stations.indexOf(entry.target);
-
-            if (entry.isIntersecting) {
-                // Set active states
-                entry.target.classList.add('active');
-
-                dots.forEach((dot, i) => {
-                    if (i === index) dot.classList.add('active');
-                    else dot.classList.remove('active');
-                });
-
-                // Add animation classes or styles for the content
-                const content = entry.target.querySelector('.station-content');
-                if (content) {
-                    content.style.opacity = '1';
-                    content.style.transform = 'scale(1)';
-                    content.style.filter = 'none';
-                    content.style.pointerEvents = 'auto';
+    // Initialize Swiper
+    const swiper = new Swiper('.mySwiper', {
+        direction: 'vertical',
+        mousewheel: true,
+        keyboard: {
+            enabled: true,
+        },
+        speed: 800,
+        on: {
+            init: function () {
+                updateActiveState(this.activeIndex);
+            },
+            slideChange: function () {
+                updateActiveState(this.activeIndex);
+            },
+            progress: function (swiper, progress) {
+                // Update scroll progress bar based on Swiper progress
+                if (scrollProgressBar) {
+                    scrollProgressBar.style.height = `${progress * 100}%`;
                 }
+            }
+        }
+    });
+
+    function updateActiveState(activeIndex) {
+        // Update dots
+        dots.forEach((dot, i) => {
+            if (i === activeIndex) {
+                dot.classList.add('active');
             } else {
-                // Remove active states
-                entry.target.classList.remove('active');
+                dot.classList.remove('active');
+            }
+        });
 
-                const content = entry.target.querySelector('.station-content');
-                if (content) {
-                    content.style.opacity = '0';
-                    content.style.transform = 'scale(0.95)';
-                    content.style.pointerEvents = 'none';
+        // Update stations (animations and active class)
+        stations.forEach((station, i) => {
+            const content = station.querySelector('.station-content');
+            if (!content) return;
 
-                    // Special case for wellness station
-                    if (index === 6) {
-                        content.style.filter = 'blur(10px)';
-                    }
+            // Set transitions for smooth animations
+            content.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+            if (i === activeIndex) {
+                station.classList.add('active');
+                content.style.opacity = '1';
+                content.style.transform = 'scale(1)';
+                content.style.filter = 'none';
+                content.style.pointerEvents = 'auto';
+            } else {
+                station.classList.remove('active');
+                content.style.opacity = '0';
+                content.style.transform = 'scale(0.95)';
+                content.style.pointerEvents = 'none';
+
+                // Restore special case for wellness station (index 6) from original code
+                if (i === 6) {
+                    content.style.filter = 'blur(10px)';
+                } else {
+                    content.style.filter = 'none';
                 }
             }
         });
-    }, observerOptions);
 
-    // Observe all stations and initialize their state
-    stations.forEach(station => {
-        const content = station.querySelector('.station-content');
-        if (content) {
-            content.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            content.style.opacity = '0';
-            content.style.transform = 'scale(0.95)';
-        }
-        observer.observe(station);
-    });
-
-    // Handle scroll progress
-    world.addEventListener('scroll', () => {
-        const maxScroll = world.scrollHeight - world.clientHeight;
-        if (maxScroll <= 0) return;
-
-        const progress = Math.min(Math.max(world.scrollTop / maxScroll, 0), 1);
-
-        if (scrollProgressBar) {
-            scrollProgressBar.style.height = `${progress * 100}%`;
-        }
-
+        // Toggle scroll to top button
         if (scrollToTopBtn) {
-            if (progress > 0.1) {
+            if (activeIndex > 0) {
                 scrollToTopBtn.style.opacity = '1';
                 scrollToTopBtn.style.pointerEvents = 'auto';
                 scrollToTopBtn.style.transform = 'translateY(0)';
@@ -86,28 +79,26 @@ function initJournal() {
                 scrollToTopBtn.style.transform = 'translateY(1rem)';
             }
         }
-    });
-
-    // Map Dot Navigation
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            stations[index].scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-
-    // Scroll to Top
-    if (scrollToTopBtn) {
-        scrollToTopBtn.addEventListener('click', () => {
-            world.scrollTo({ top: 0, behavior: 'smooth' });
-        });
     }
 
-    // Initial Trigger
-    world.dispatchEvent(new Event('scroll'));
+    // Map Dot Click Handlers
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            swiper.slideTo(index);
+        });
+    });
+
+    // Scroll to Top Click Handler
+    if (scrollToTopBtn) {
+        scrollToTopBtn.addEventListener('click', () => {
+            swiper.slideTo(0);
+        });
+    }
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initJournal);
+// Ensure DOM is fully loaded before initializing
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initJournal);
 } else {
     initJournal();
 }
