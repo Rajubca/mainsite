@@ -4,7 +4,22 @@ function initJournal() {
     const scrollToTopBtn = document.getElementById('scroll-to-top');
     const scrollProgressBar = document.getElementById('scroll-progress-bar');
 
+
+    // Initialize all sections to hidden state except the first one
+    stations.forEach((station, i) => {
+        const content = station.querySelector('.station-content');
+        if (content) {
+            content.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            if (i !== 0) {
+                content.style.opacity = '0';
+                content.style.transform = 'scale(0.95)';
+                content.style.pointerEvents = 'none';
+            }
+        }
+    });
+
     // Initialize Swiper
+
     const swiper = new Swiper('.mySwiper', {
         direction: 'vertical',
         mousewheel: true,
