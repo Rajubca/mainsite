@@ -128,8 +128,6 @@
 
 
             /* transition removed for smooth js lerp */
-            opacity: 0.05;
-            transform: scale(0.95);
         }
 
         @media (max-width: 768px) {

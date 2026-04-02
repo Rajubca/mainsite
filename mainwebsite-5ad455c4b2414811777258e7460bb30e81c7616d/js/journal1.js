@@ -10,7 +10,7 @@ function initJournal() {
     const observerOptions = {
         root: world,
         rootMargin: '0px',
-        threshold: 0.15 // Trigger when 20% of the section is visible
+        threshold: 0.05 // Trigger when 20% of the section is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
