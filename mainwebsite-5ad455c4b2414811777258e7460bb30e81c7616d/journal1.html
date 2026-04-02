@@ -28,7 +28,8 @@
             }
         }
     </script>
-<link href="css/journal1.css" rel="stylesheet"/></head>
+<link href="css/journal1.css" rel="stylesheet"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
 <body class="antialiased selection:bg-forest selection:text-white">
 <!-- Fixed UI Layer -->
 <div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
@@ -69,11 +70,11 @@
     <div id="scroll-progress-bar" class="w-full h-0 bg-gradient-to-b from-yellow-500 to-blue-500 rounded-full transition-all duration-100 ease-out"></div>
 </div>
 
-<div id="main-scroller" class="h-screen w-full overflow-y-auto snap-y snap-mandatory relative scroll-smooth">
+<div id="main-scroller" class="swiper mySwiper h-screen w-full relative">
 <!-- The sliding 2D world equivalent (now vertical blocks) -->
-<div id="canvas-world" class="w-full flex flex-col">
+<div id="canvas-world" class="swiper-wrapper w-full">
 <!-- Station 1: Bottom Left (Start) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-1"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-1"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content bg-slate-800 backdrop-blur-md border border-blue-500/20 rounded-2xl p-12 text-center flex flex-col items-center justify-center relative overflow-hidden"><div style="position:relative;z-index:1;">
 <span class="eyebrow">Shiva Services — Est. 2024</span>
 <h2 class="display text-3xl md:text-5xl text-gradient-gold" style="font-style:italic;margin-bottom:1.25rem;">The Gateway</h2>
@@ -98,7 +99,7 @@
 </div>
 </section>
 <!-- Station 2: Middle Left (New) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-2"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-2"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content p-4 md:p-10 max-h-[85vh] md:max-h-[90vh] text-sm md:text-base bg-slate-800 backdrop-blur-sm border-l-4 border-blue-500 rounded-r-2xl shadow-[0_0_30px_rgba(59,130,246,0.1)]"><h2 class="title-xl text-2xl md:text-4xl" style="font-style:italic;margin-bottom:2rem;">Our Vision</h2>
 <div class="split flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8" style="margin-bottom:2.5rem;">
 <div>
@@ -131,7 +132,7 @@
 </div>
 </section>
 <!-- Station 3: Top Left -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-3"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-3"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content relative overflow-hidden rounded-2xl border border-blue-500/20 bg-slate-800 backdrop-blur shadow-2xl"><div style="position:relative;z-index:1;">
 <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);">
 <h2 class="title-xl text-2xl md:text-4xl" style="font-style:italic;">Build the Future</h2>
@@ -163,7 +164,7 @@
 </div>
 </section>
 <!-- Station 4: Diagonal Middle Left (New) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-4"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-4"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content bg-slate-800 text-slate-100 p-12 rounded-3xl border border-yellow-500/30 relative overflow-hidden shadow-[0_0_30px_rgba(234,179,8,0.15)]"><div class="split flex flex-col md:grid md:grid-cols-2 gap-4 md:gap-8" style="position:relative;z-index:1;">
 <div>
 <span class="eyebrow">Intelligence</span>
@@ -217,7 +218,7 @@
 </div>
 </section>
 <!-- Station 5: Center Bottom -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-5"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-5"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content p-4 md:p-12 max-h-[85vh] md:max-h-[90vh] text-sm md:text-base bg-slate-800 rounded-xl border border-blue-500/30 shadow-2xl relative overflow-hidden"><div style="position:relative;z-index:1;">
 <span class="eyebrow">Digital Engineering</span>
 <h2 class="title-xl text-2xl md:text-4xl" style="font-style:italic;margin-bottom:1rem;">Systems That Scale</h2>
@@ -253,7 +254,7 @@
 </div>
 </section>
 <!-- Station 6: Diagonal Middle Right (New) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-6"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-6"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content bg-slate-800 text-white rounded-3xl overflow-hidden shadow-2xl relative border border-slate-700"><div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem;">
 <div class="icon-row"><span class="material-symbols-outlined">web</span><span>High-performance website design</span></div>
 <div class="icon-row"><span class="material-symbols-outlined">apps</span><span>Scalable web applications</span></div>
@@ -278,7 +279,7 @@
 </div>
 </section>
 <!-- Station 7: Top Right -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-7"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-7"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content rounded-3xl overflow-hidden relative border border-yellow-500/30 shadow-[0_0_30px_rgba(234,179,8,0.1)]"><!-- Soft gold wave -->
 <svg preserveaspectratio="none" style="position:absolute;bottom:0;left:0;width:100%;pointer-events:none;opacity:0.15;" viewbox="0 0 1440 120">
 <path d="M0,60L60,65C120,70,240,80,360,75C480,70,600,50,720,50C840,50,960,70,1080,72C1200,74,1320,62,1380,55L1440,48L1440,120L0,120Z" fill="var(--gold)"></path>
@@ -305,7 +306,7 @@
 </div>
 </section>
 <!-- Station 8: Middle Right (New) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-8"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-8"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content p-4 md:p-12 max-h-[85vh] md:max-h-[90vh] text-sm md:text-base bg-slate-800 rounded-2xl border-t-4 border-yellow-500 shadow-[0_0_30px_rgba(234,179,8,0.15)]"><div style="position:relative;z-index:1;">
 <span class="eyebrow">Protection &amp; Asset</span>
 <h2 class="title-xl text-2xl md:text-4xl" style="font-style:italic;margin-bottom:2.5rem;">Secure Your Future</h2>
@@ -333,7 +334,7 @@
 </div>
 </section>
 <!-- Station 9: Bottom Right (End) -->
-<section class="station w-full h-screen snap-start flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-9"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+<section class="station w-full h-screen swiper-slide flex items-center justify-center p-4 md:p-12 relative overflow-hidden" id="station-9"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content p-4 md:p-12 max-h-[85vh] md:max-h-[90vh] text-sm md:text-base bg-slate-900 text-slate-100 rounded-3xl border border-blue-500/20 shadow-[0_0_50px_rgba(59,130,246,0.2)] relative overflow-hidden"><div style="position:relative;z-index:1;">
 <div style="text-align:center;margin-bottom:3rem;">
 <span class="eyebrow" style="justify-content:center;display:block;">Final Station</span>
@@ -382,4 +383,5 @@
 </section>
 </div>
 </div>
-<script src="js/journal1.js"></script></body></html>
+<script src="js/journal1.js"></script><script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body></html>
