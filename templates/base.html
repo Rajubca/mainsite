@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link href="{% static 'css/journal1.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans text-gray-900 antialiased h-screen overflow-hidden">
+    <nav class="p-4 bg-white shadow-md fixed w-full z-50 flex justify-between items-center">
+        <a href="{% url 'index' %}" class="text-xl font-bold text-gray-800">My Site</a>
+        <div>
+            <a href="{% url 'index' %}" class="mx-2 text-gray-600 hover:text-gray-900">Home</a>
+            <a href="{% url 'blog:post_list' %}" class="mx-2 text-gray-600 hover:text-gray-900">Blog</a>
+        </div>
+    </nav>
+    <div class="pt-20 h-full overflow-y-auto">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

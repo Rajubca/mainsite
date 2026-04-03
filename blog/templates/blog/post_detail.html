@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-4 bg-white shadow-lg rounded-lg mt-8 mb-16">
+    <h1 class="text-4xl font-bold mb-4">{{ post.title }}</h1>
+    <p class="text-gray-500 mb-6 border-b pb-4">By {{ post.author }} on {{ post.created_date|date:"F j, Y" }}</p>
+
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full rounded-lg mb-6 max-h-96 object-cover">
+    {% endif %}
+
+    <div class="prose lg:prose-xl max-w-none text-gray-800">
+        {{ post.content|safe }}
+    </div>
+
+    <div class="mt-10 pt-6 border-t">
+        <a href="{% url 'blog:post_list' %}" class="text-blue-500 hover:text-blue-700 font-semibold">&larr; Back to all posts</a>
+    </div>
+</div>
+{% endblock %}
