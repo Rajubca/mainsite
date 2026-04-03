@@ -52,3 +52,4 @@ This is a Django application converted from a static site. It includes the main 
    - **Main site:** http://127.0.0.1:8000/
    - **Blog list:** http://127.0.0.1:8000/blog/
    - **Admin interface:** http://127.0.0.1:8000/admin/
+   - **Create a New Blog Post:** http://127.0.0.1:8000/admin/blog/post/add/

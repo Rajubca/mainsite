@@ -130,3 +130,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # CKEditor configuration
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
+
+# Settings for collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
