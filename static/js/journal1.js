@@ -11,6 +11,19 @@ function initJournal() {
         document.getElementById('map-dot-8')
     ];
 
+
+    const points = [
+        { x: 0, y: -300 },      // Station 1
+        { x: 0, y: -150 },      // Station 2
+        { x: 0, y: 0 },         // Station 3
+        { x: -100, y: -150 },   // Station 4
+        { x: -200, y: -300 },   // Station 5
+        { x: -300, y: -150 },   // Station 6
+        { x: -400, y: 0 },      // Station 7
+        { x: -400, y: -150 },   // Station 8
+        { x: -400, y: -300 }    // Station 9
+    ];
+
     const stations = [
         document.getElementById('station-1'),
         document.getElementById('station-2'),
@@ -130,16 +143,32 @@ function initJournal() {
 
 
     function renderLoop() {
-        // Smooth lerping factor (0.05 is very smooth and a bit slow)
+        // Smooth lerping factor
         currentScroll += (targetScroll - currentScroll) * 0.035;
 
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         let absoluteProgress = 0;
 
         if (maxScroll > 0) {
-            // Map currentScroll (0 to maxScroll) to progress (0 to 8)
             absoluteProgress = (currentScroll / maxScroll) * (stations.length - 1);
         }
+
+        const totalSegments = points.length - 1;
+        const currentSegment = Math.min(Math.floor(absoluteProgress), totalSegments - 1);
+        const segmentProgress = absoluteProgress - currentSegment;
+
+        // Easing function (smoothstep) for softer transitions between stations
+        const ease = t => t * t * (3 - 2 * t);
+        const easedProgress = ease(segmentProgress);
+
+        const startPoint = points[currentSegment];
+        const endPoint = points[currentSegment + 1];
+
+        const currentX = startPoint.x + (endPoint.x - startPoint.x) * easedProgress;
+        const currentY = startPoint.y + (endPoint.y - startPoint.y) * easedProgress;
+
+        const world = document.getElementById('canvas-world');
+        world.style.transform = `translate3d(${currentX}vw, ${currentY}vh, 0)`;
 
         dots.forEach((dot, index) => {
             const distance = Math.abs(absoluteProgress - index);
@@ -151,14 +180,13 @@ function initJournal() {
                 dot.classList.remove('active');
             }
 
-            // Station Content logic (Opacity, Blur & Scale & 3D transforms)
+            // Station Content logic (Opacity, Blur & Scale)
             const stationContent = stations[index].querySelector('.station-content');
             if (stationContent) {
                 if (distance < 1.0) {
                     stations[index].classList.add('active');
                     stations[index].classList.add('is-visible');
 
-                    // Opacity fades out based on distance
                     const opacity = Math.max(0, 1 - (distance * 1.5));
                     stationContent.style.opacity = opacity.toString();
 
@@ -168,64 +196,22 @@ function initJournal() {
                         stationContent.style.pointerEvents = 'none';
                     }
 
-                    // Apply blur to ALL sections as they move out of view
-                    // The further away (distance), the blurrier it gets
-                    const blurAmount = distance * 20; // Max 20px blur
+                    const blurAmount = distance * 20;
                     stationContent.style.filter = `blur(${blurAmount}px)`;
 
-                    let transformStr = '';
-
-                    switch(index) {
-                        case 0:
-                            const scale0 = Math.max(0.85, 1 - (distance * 0.15));
-                            transformStr = `translate3d(0,0,0) scale(${scale0})`;
-                            break;
-                        case 1:
-                            const transX1 = distance * -150;
-                            const scale1 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translate3d(${transX1}px, 0, 0) scale(${scale1})`;
-                            break;
-                        case 2:
-                            const transX2 = distance * 150;
-                            const scale2 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translate3d(${transX2}px, 0, 0) scale(${scale2})`;
-                            break;
-                        case 3:
-                            const rotX3 = distance * 15;
-                            const scale3 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `perspective(1000px) rotateX(${rotX3}deg) scale(${scale3})`;
-                            break;
-                        case 4:
-                            const scale4 = Math.max(0.7, 1 - (distance * 0.3));
-                            transformStr = `translate3d(0,0,0) scale(${scale4})`;
-                            break;
-                        case 5:
-                            const transY5 = distance * 200;
-                            const scale5 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translate3d(0, ${transY5}px, 0) scale(${scale5})`;
-                            break;
-                        case 6:
-                            const scale6 = Math.max(0.95, 1 - (distance * 0.05));
-                            transformStr = `translate3d(0,0,0) scale(${scale6})`;
-                            break;
-                        case 7:
-                            const transY7 = distance * -200;
-                            const scale7 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translate3d(0, ${transY7}px, 0) scale(${scale7})`;
-                            break;
-                        case 8:
-                            const scale8 = Math.max(0.8, 1 - (distance * 0.2));
-                            transformStr = `translate3d(0,0,0) scale(${scale8})`;
-                            break;
-                    }
-                    stationContent.style.transform = transformStr;
+                    // We remove the crazy custom scales because the dangle animation overrides transform
+                    // and we are panning the camera now. We just scale it slightly if it's far.
+                    const scale = Math.max(0.8, 1 - (distance * 0.2));
+                    // We cannot use transform here directly because it conflicts with the @keyframes dangle
+                    // However, wrapping the content in another div to scale would be complex.
+                    // Let's use the zoom property as a hack, or rely entirely on camera panning.
+                    // For now, let's just rely on the camera panning and opacity/blur!
 
                 } else {
                     stations[index].classList.remove('active');
                     stations[index].classList.remove('is-visible');
                     stationContent.style.opacity = '0';
                     stationContent.style.pointerEvents = 'none';
-                    stationContent.style.transform = 'translate3d(0,0,0) scale(0.5)';
                     stationContent.style.filter = 'blur(20px)';
                 }
             }

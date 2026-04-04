@@ -71,6 +71,16 @@
 <!-- The sliding 2D world -->
 <div id="scroll-proxy" style="position: absolute; top: 0; left: 0; width: 1px; height: 3600vh; z-index: -1;"></div>
 <div id="canvas-world" class="fixed inset-0 overflow-hidden pointer-events-none">
+<!-- Giant Glowing Background Path -->
+<svg style="position: absolute; top: 0; left: 0; width: 500vw; height: 400vh; pointer-events: none; z-index: 1;" viewBox="0 0 500 400" preserveAspectRatio="none">
+    <path d="M 50 350 L 50 200 L 50 50 L 150 200 L 250 350 L 350 200 L 450 50 L 450 200 L 450 350"
+          fill="none"
+          stroke="rgba(234, 179, 8, 0.4)"
+          stroke-width="1.5"
+          vector-effect="non-scaling-stroke"
+          style="filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.8));" />
+</svg>
+
 <!-- Station 1: Bottom Left (Start) -->
 <section class="station absolute inset-0 flex items-center justify-center p-4 md:p-12 pointer-events-none" id="station-1"><div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
 <div class="station-content pointer-events-auto bg-slate-800 backdrop-blur-md border border-blue-500/20 rounded-2xl p-12 text-center flex flex-col items-center justify-center relative overflow-hidden"><div style="position:relative;z-index:1;">
