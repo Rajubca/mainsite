@@ -1,0 +1,18 @@
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (ckeditor.W001) django-ckeditor bundles CKEditor 4.22.1 which isn't supported anymore and which does have unfixed security issues, see for example https://ckeditor.com/cke4/release/CKEditor-4.24.0-LTS . You should consider strongly switching to a different editor (maybe CKEditor 5 respectively django-ckeditor-5 after checking whether the CKEditor 5 license terms work for you) or switch to the non-free CKEditor 4 LTS package. See https://ckeditor.com/ckeditor-4-support/ for more on this. (Note! This notice has been added by the django-ckeditor developers and we are not affiliated with CKSource and were not involved in the licensing change, so please refrain from complaining to us. Thanks.)
+
+System check identified 1 issue (0 silenced).
+[04/Apr/2026 03:58:38] "HEAD / HTTP/1.1" 200 0
+[04/Apr/2026 03:59:10] "GET / HTTP/1.1" 200 26409
+[04/Apr/2026 03:59:43] "GET / HTTP/1.1" 200 26409
+[04/Apr/2026 04:02:58] "GET / HTTP/1.1" 200 26409
+[04/Apr/2026 04:02:58] "GET /static/css/journal1.css HTTP/1.1" 200 16910
+[04/Apr/2026 04:02:58] "GET /static/images/7014b225e5ae3b0512bf68906380f56f.jpg HTTP/1.1" 200 88837
+[04/Apr/2026 04:02:58] "GET /static/css/tailwind.css HTTP/1.1" 200 27796
+[04/Apr/2026 04:02:58] "GET /static/images/a6a5de9becaa7c0ed40eae0a8f5b5b69.jpg%3Bfit%3Dcrop%26amp%3Bq%3D80%26amp%3Bw%3D600 HTTP/1.1" 404 2063
+[04/Apr/2026 04:02:58] "GET /static/images/41ee7ffa4a0d70a4f2ee198046ec7f3b.jpg%3Bfit%3Dcrop%26amp%3Bq%3D80%26amp%3Bw%3D700 HTTP/1.1" 404 2063
+[04/Apr/2026 04:02:58] "GET /static/images/3cfe39b6a41ac4e7fd12221e47906177.jpg%3Bfit%3Dcrop%26amp%3Bq%3D80%26amp%3Bw%3D500 HTTP/1.1" 404 2063
+[04/Apr/2026 04:02:58] "GET /static/js/journal1.js HTTP/1.1" 200 5595
