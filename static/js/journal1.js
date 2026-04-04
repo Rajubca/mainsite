@@ -126,41 +126,105 @@ function initJournal() {
         });
     });
 
-    // Intersection Observer to highlight active dot and trigger animations
-    const observerOptions = {
-        root: worldContainer,
-        rootMargin: '0px',
-        threshold: 0.5 // Trigger when 50% of the section is visible
-    };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.id;
-                const index = parseInt(id.split('-')[1]) - 1;
+    // Smooth scrolling variables for transition effects
+    let currentScroll = worldContainer.scrollTop;
+    let targetScroll = worldContainer.scrollTop;
 
-                // Add active class to target section
-                entry.target.classList.add('is-visible');
+    function renderLoop() {
+        targetScroll = worldContainer.scrollTop;
+        currentScroll += (targetScroll - currentScroll) * 0.1; // Smooth lerping factor
 
-                // Update dots
-                dots.forEach((dot, i) => {
-                    if (i === index) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
+        const windowHeight = window.innerHeight;
+        // Float index representing current scroll position
+        const absoluteProgress = currentScroll / windowHeight;
+
+        dots.forEach((dot, index) => {
+            const distance = Math.abs(absoluteProgress - index);
+
+            // Map Dot logic
+            if (distance < 0.5) {
+                dot.classList.add('active');
             } else {
-                entry.target.classList.remove('is-visible');
+                dot.classList.remove('active');
+            }
+
+            // Station Content logic (Opacity & Scale & 3D transforms)
+            const stationContent = stations[index].querySelector('.station-content');
+            if (stationContent) {
+                if (distance < 0.8) {
+                    stations[index].classList.add('active');
+                    stations[index].classList.add('is-visible'); // Trigger station glow
+
+                    stationContent.style.opacity = '1';
+                    stationContent.style.pointerEvents = 'auto';
+
+                    let transformStr = '';
+
+                    switch(index) {
+                        case 0:
+                            const scale0 = Math.max(0.85, 1 - (distance * 0.15));
+                            transformStr = `scale(${scale0})`;
+                            break;
+                        case 1:
+                            const transX1 = distance * -150;
+                            const scale1 = Math.max(0.9, 1 - (distance * 0.1));
+                            transformStr = `translateX(${transX1}px) scale(${scale1})`;
+                            break;
+                        case 2:
+                            const transX2 = distance * 150;
+                            const scale2 = Math.max(0.9, 1 - (distance * 0.1));
+                            transformStr = `translateX(${transX2}px) scale(${scale2})`;
+                            break;
+                        case 3:
+                            const rotX3 = distance * 15;
+                            const scale3 = Math.max(0.9, 1 - (distance * 0.1));
+                            transformStr = `perspective(1000px) rotateX(${rotX3}deg) scale(${scale3})`;
+                            break;
+                        case 4:
+                            const scale4 = Math.max(0.7, 1 - (distance * 0.3));
+                            transformStr = `scale(${scale4})`;
+                            break;
+                        case 5:
+                            const transY5 = distance * 200;
+                            const scale5 = Math.max(0.9, 1 - (distance * 0.1));
+                            transformStr = `translateY(${transY5}px) scale(${scale5})`;
+                            break;
+                        case 6:
+                            const scale6 = Math.max(0.95, 1 - (distance * 0.05));
+                            transformStr = `scale(${scale6})`;
+                            stationContent.style.filter = `blur(${distance * 10}px)`;
+                            break;
+                        case 7:
+                            const transY7 = distance * -200;
+                            const scale7 = Math.max(0.9, 1 - (distance * 0.1));
+                            transformStr = `translateY(${transY7}px) scale(${scale7})`;
+                            break;
+                        case 8:
+                            const scale8 = Math.max(0.8, 1 - (distance * 0.2));
+                            transformStr = `scale(${scale8})`;
+                            break;
+                    }
+                    stationContent.style.transform = transformStr;
+                    if(index !== 6) stationContent.style.filter = 'none';
+
+                } else {
+                    stations[index].classList.remove('active');
+                    stations[index].classList.remove('is-visible');
+                    stationContent.style.opacity = '0';
+                    stationContent.style.pointerEvents = 'none';
+                    stationContent.style.transform = 'scale(0.5)';
+                    if(index === 6) stationContent.style.filter = 'blur(10px)';
+                }
             }
         });
-    }, observerOptions);
 
-    stations.forEach(station => {
-        if (station) {
-            observer.observe(station);
-        }
-    });
+        requestAnimationFrame(renderLoop);
+    }
+
+    // Start rendering loop
+    requestAnimationFrame(renderLoop);
+
 }
 
 if (document.readyState === "loading") {
