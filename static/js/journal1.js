@@ -127,20 +127,11 @@ function initJournal() {
         updateScrollToTopVisibility(targetScroll);
     });
 
-    // Custom wheel handler to make physical mouse wheel scroll slower
-    window.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        // Decrease the delta to make the scroll "feel" slower and heavier
-        targetScroll += e.deltaY * 0.4;
-        // Clamp to min/max
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
-        window.scrollTo(0, targetScroll);
-    }, { passive: false });
+
 
     function renderLoop() {
         // Smooth lerping factor (0.05 is very smooth and a bit slow)
-        currentScroll += (targetScroll - currentScroll) * 0.05;
+        currentScroll += (targetScroll - currentScroll) * 0.035;
 
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         let absoluteProgress = 0;
@@ -187,17 +178,17 @@ function initJournal() {
                     switch(index) {
                         case 0:
                             const scale0 = Math.max(0.85, 1 - (distance * 0.15));
-                            transformStr = `scale(${scale0})`;
+                            transformStr = `translate3d(0,0,0) scale(${scale0})`;
                             break;
                         case 1:
                             const transX1 = distance * -150;
                             const scale1 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translateX(${transX1}px) scale(${scale1})`;
+                            transformStr = `translate3d(${transX1}px, 0, 0) scale(${scale1})`;
                             break;
                         case 2:
                             const transX2 = distance * 150;
                             const scale2 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translateX(${transX2}px) scale(${scale2})`;
+                            transformStr = `translate3d(${transX2}px, 0, 0) scale(${scale2})`;
                             break;
                         case 3:
                             const rotX3 = distance * 15;
@@ -206,25 +197,25 @@ function initJournal() {
                             break;
                         case 4:
                             const scale4 = Math.max(0.7, 1 - (distance * 0.3));
-                            transformStr = `scale(${scale4})`;
+                            transformStr = `translate3d(0,0,0) scale(${scale4})`;
                             break;
                         case 5:
                             const transY5 = distance * 200;
                             const scale5 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translateY(${transY5}px) scale(${scale5})`;
+                            transformStr = `translate3d(0, ${transY5}px, 0) scale(${scale5})`;
                             break;
                         case 6:
                             const scale6 = Math.max(0.95, 1 - (distance * 0.05));
-                            transformStr = `scale(${scale6})`;
+                            transformStr = `translate3d(0,0,0) scale(${scale6})`;
                             break;
                         case 7:
                             const transY7 = distance * -200;
                             const scale7 = Math.max(0.9, 1 - (distance * 0.1));
-                            transformStr = `translateY(${transY7}px) scale(${scale7})`;
+                            transformStr = `translate3d(0, ${transY7}px, 0) scale(${scale7})`;
                             break;
                         case 8:
                             const scale8 = Math.max(0.8, 1 - (distance * 0.2));
-                            transformStr = `scale(${scale8})`;
+                            transformStr = `translate3d(0,0,0) scale(${scale8})`;
                             break;
                     }
                     stationContent.style.transform = transformStr;
@@ -234,7 +225,7 @@ function initJournal() {
                     stations[index].classList.remove('is-visible');
                     stationContent.style.opacity = '0';
                     stationContent.style.pointerEvents = 'none';
-                    stationContent.style.transform = 'scale(0.5)';
+                    stationContent.style.transform = 'translate3d(0,0,0) scale(0.5)';
                     stationContent.style.filter = 'blur(20px)';
                 }
             }

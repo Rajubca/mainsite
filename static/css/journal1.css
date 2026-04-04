@@ -57,6 +57,7 @@ body {
   opacity: 1;
   /* Always visible in the new scroll system */
   transform: none;
+            will-change: transform, opacity, filter;
   /* No scaling down */
 }
 
