@@ -23,12 +23,10 @@ function initJournal() {
         document.getElementById('station-9')
     ];
 
-    const worldContainer = document.getElementById('canvas-world');
-
     // Scroll-To-Top button logic
     const scrollToTopBtn = document.getElementById('scroll-to-top');
     scrollToTopBtn.addEventListener('click', () => {
-        worldContainer.scrollTo({
+        window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
@@ -45,10 +43,6 @@ function initJournal() {
             scrollToTopBtn.style.transform = 'translateY(1rem)';
         }
     }
-
-    worldContainer.addEventListener('scroll', () => {
-        updateScrollToTopVisibility(worldContainer.scrollTop);
-    });
 
     // --- Draggable Navigation Logic (for the mini-map) ---
     const navOverlay = document.getElementById('nav-overlay');
@@ -114,30 +108,47 @@ function initJournal() {
     // Setup map dots to be clickable and scroll to section
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            const station = stations[index];
-            if (station) {
-                // Determine offset top relative to scroll container
-                const offsetTop = station.offsetTop;
-                worldContainer.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const targetScroll = (index / (stations.length - 1)) * maxScroll;
+
+            window.scrollTo({
+                top: targetScroll,
+                behavior: 'smooth'
+            });
         });
     });
 
+    // Custom smooth scroll logic mapping window.scrollY to absolute progress
+    let currentScroll = window.scrollY;
+    let targetScroll = window.scrollY;
 
-    // Smooth scrolling variables for transition effects
-    let currentScroll = worldContainer.scrollTop;
-    let targetScroll = worldContainer.scrollTop;
+    window.addEventListener('scroll', () => {
+        targetScroll = window.scrollY;
+        updateScrollToTopVisibility(targetScroll);
+    });
+
+    // Custom wheel handler to make physical mouse wheel scroll slower
+    window.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        // Decrease the delta to make the scroll "feel" slower and heavier
+        targetScroll += e.deltaY * 0.4;
+        // Clamp to min/max
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+        window.scrollTo(0, targetScroll);
+    }, { passive: false });
 
     function renderLoop() {
-        targetScroll = worldContainer.scrollTop;
-        currentScroll += (targetScroll - currentScroll) * 0.1; // Smooth lerping factor
+        // Smooth lerping factor (0.05 is very smooth and a bit slow)
+        currentScroll += (targetScroll - currentScroll) * 0.05;
 
-        const windowHeight = window.innerHeight;
-        // Float index representing current scroll position
-        const absoluteProgress = currentScroll / windowHeight;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        let absoluteProgress = 0;
+
+        if (maxScroll > 0) {
+            // Map currentScroll (0 to maxScroll) to progress (0 to 8)
+            absoluteProgress = (currentScroll / maxScroll) * (stations.length - 1);
+        }
 
         dots.forEach((dot, index) => {
             const distance = Math.abs(absoluteProgress - index);
@@ -149,15 +160,27 @@ function initJournal() {
                 dot.classList.remove('active');
             }
 
-            // Station Content logic (Opacity & Scale & 3D transforms)
+            // Station Content logic (Opacity, Blur & Scale & 3D transforms)
             const stationContent = stations[index].querySelector('.station-content');
             if (stationContent) {
-                if (distance < 0.8) {
+                if (distance < 1.0) {
                     stations[index].classList.add('active');
-                    stations[index].classList.add('is-visible'); // Trigger station glow
+                    stations[index].classList.add('is-visible');
 
-                    stationContent.style.opacity = '1';
-                    stationContent.style.pointerEvents = 'auto';
+                    // Opacity fades out based on distance
+                    const opacity = Math.max(0, 1 - (distance * 1.5));
+                    stationContent.style.opacity = opacity.toString();
+
+                    if (distance < 0.2) {
+                        stationContent.style.pointerEvents = 'auto';
+                    } else {
+                        stationContent.style.pointerEvents = 'none';
+                    }
+
+                    // Apply blur to ALL sections as they move out of view
+                    // The further away (distance), the blurrier it gets
+                    const blurAmount = distance * 20; // Max 20px blur
+                    stationContent.style.filter = `blur(${blurAmount}px)`;
 
                     let transformStr = '';
 
@@ -193,7 +216,6 @@ function initJournal() {
                         case 6:
                             const scale6 = Math.max(0.95, 1 - (distance * 0.05));
                             transformStr = `scale(${scale6})`;
-                            stationContent.style.filter = `blur(${distance * 10}px)`;
                             break;
                         case 7:
                             const transY7 = distance * -200;
@@ -206,7 +228,6 @@ function initJournal() {
                             break;
                     }
                     stationContent.style.transform = transformStr;
-                    if(index !== 6) stationContent.style.filter = 'none';
 
                 } else {
                     stations[index].classList.remove('active');
@@ -214,7 +235,7 @@ function initJournal() {
                     stationContent.style.opacity = '0';
                     stationContent.style.pointerEvents = 'none';
                     stationContent.style.transform = 'scale(0.5)';
-                    if(index === 6) stationContent.style.filter = 'blur(10px)';
+                    stationContent.style.filter = 'blur(20px)';
                 }
             }
         });
@@ -224,7 +245,6 @@ function initJournal() {
 
     // Start rendering loop
     requestAnimationFrame(renderLoop);
-
 }
 
 if (document.readyState === "loading") {
