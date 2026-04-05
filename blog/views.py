@@ -13,11 +13,16 @@ def post_list(request):
         posts = Post.objects.all()
         active_category = None
 
-    return render(request, 'blog/post_list.html', {
+    context = {
         'posts': posts,
         'categories': categories,
         'active_category': active_category
-    })
+    }
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, 'blog/post_list_partial.html', context)
+
+    return render(request, 'blog/post_list.html', context)
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
