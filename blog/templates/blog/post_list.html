@@ -42,32 +42,38 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const url = this.getAttribute('href');
 
-            // Update active state classes on buttons
+            // Reset all buttons to inactive state
             filterLinks.forEach(btn => {
-                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
-                btn.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300', 'border', 'border-gray-300', 'dark:border-gray-600', 'hover:bg-gray-50', 'dark:hover:bg-gray-700');
-                btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300', 'hover:bg-gray-50 dark:bg-gray-900 transition-colors duration-300');
+                btn.className = 'category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300';
             });
-            this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300', 'hover:bg-gray-50 dark:bg-gray-900 transition-colors duration-300');
-            this.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
 
-            // Fetch partial HTML
+            // Set clicked button to active state
+            this.className = 'category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors bg-indigo-600 text-white shadow-md transition-colors duration-300';
+
+            // Show a quick loading state or opacity fade
+            gridContainer.style.opacity = '0.5';
+
             fetch(url, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
             .then(html => {
                 gridContainer.innerHTML = html;
-                // Update browser URL
+                gridContainer.style.opacity = '1';
                 window.history.pushState({path: url}, '', url);
             })
-            .catch(error => console.error('Error fetching posts:', error));
+            .catch(error => {
+                console.error('Error fetching posts:', error);
+                gridContainer.style.opacity = '1';
+            });
         });
     });
 
-    // Handle back/forward browser buttons
     window.addEventListener('popstate', function() {
         window.location.reload();
     });
