@@ -1,9 +1,23 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post
+from .models import Post, Category
 
 def post_list(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    category_slug = request.GET.get('category')
+    categories = Category.objects.all()
+
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        posts = Post.objects.filter(category=category)
+        active_category = category
+    else:
+        posts = Post.objects.all()
+        active_category = None
+
+    return render(request, 'blog/post_list.html', {
+        'posts': posts,
+        'categories': categories,
+        'active_category': active_category
+    })
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
