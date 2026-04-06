@@ -902,3 +902,9 @@ body {
 @media (max-width: 768px) {
     .station.is-visible .station-content { pointer-events: auto !important; }
 }
+/* Loader Hide Animation */
+#shiva-loader.loaded {
+    opacity: 0 !important;
+    visibility: hidden;
+    pointer-events: none !important;
+}

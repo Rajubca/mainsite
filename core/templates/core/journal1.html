@@ -32,6 +32,20 @@
 <link href="{% static 'css/journal1.css' %}" rel="stylesheet"/>
 <link href="{% static 'css/tailwind.css' %}" rel="stylesheet"/></head>
 <body class="antialiased selection:bg-forest selection:text-white bg-[#0b1120] overflow-hidden">
+<!-- Preloader -->
+<div id="shiva-loader" class="fixed inset-0 z-[1000000] bg-[#080c14] flex flex-col items-center justify-center transition-all duration-[1000ms] ease-in-out opacity-100 pointer-events-auto">
+    <div class="relative flex flex-col items-center">
+        <!-- Glowing aura behind text -->
+        <div class="absolute inset-0 bg-yellow-500/20 blur-[50px] rounded-full scale-150 animate-pulse"></div>
+        <h1 class="relative font-serif text-5xl md:text-7xl tracking-[0.2em] leading-none text-slate-100 shadow-xl" style="letter-spacing: 0.15em;">SHIVA</h1>
+        <div class="mt-8 flex gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_0ms]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_200ms]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_400ms]"></div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Fixed UI Layer -->
 <div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
