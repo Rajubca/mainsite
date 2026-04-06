@@ -218,28 +218,32 @@ function initJournal() {
 // Setup Preloader logic
 const loader = document.getElementById('shiva-loader');
 if (loader) {
-    // Minimum 2-second delay
-    const minTimePromise = new Promise(resolve => setTimeout(resolve, 2000));
+    let hasLoaded = false;
 
-    // Page load promise
-    const loadPromise = new Promise(resolve => {
-        if (document.readyState === 'complete') {
-            resolve();
-        } else {
-            window.addEventListener('load', resolve);
-        }
-    });
-
-    // Wait for both to finish before fading out
-    Promise.all([minTimePromise, loadPromise]).then(() => {
+    function hideLoader() {
+        if (hasLoaded) return;
+        hasLoaded = true;
         loader.classList.add('loaded');
-        // Remove it entirely from DOM after transition completes (1000ms)
         setTimeout(() => {
             if (loader.parentNode) {
                 loader.parentNode.removeChild(loader);
             }
         }, 1000);
-    });
+    }
+
+    // Minimum 2-second delay before we even CONSIDER hiding
+    setTimeout(() => {
+        if (document.readyState === 'complete') {
+            hideLoader();
+        } else {
+            // Once 2 seconds pass, if it finishes loading, hide it
+            window.addEventListener('load', hideLoader);
+        }
+    }, 2000);
+
+    // Absolute Failsafe: No matter what, hide the loader after 5 seconds
+    // so the user is never stuck looking at the logo forever if an image hangs
+    setTimeout(hideLoader, 5000);
 }
 
 if (document.readyState === "loading") {
