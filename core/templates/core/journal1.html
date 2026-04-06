@@ -32,7 +32,7 @@
 <link href="{% static 'css/journal1.css' %}" rel="stylesheet"/>
 <link href="{% static 'css/tailwind.css' %}" rel="stylesheet"/></head>
 <body class="antialiased selection:bg-forest selection:text-white bg-[#0b1120] overflow-hidden">
-  <a href="{% url 'blog:post_list' %}" class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-black font-semibold hover:bg-white transition shadow-lg">Blog</a>
+
 <!-- Fixed UI Layer -->
 <div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
 <!-- To switch menu styles, change "theme-premium" to "theme-cyberpunk" or "theme-minimal" -->
@@ -60,14 +60,19 @@
 <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.2em] text-yellow-500/90 font-bold bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg transition-all duration-[3000ms] z-[30] group-hover/nav:-translate-y-1 hover:text-yellow-400 cursor-default flex items-center gap-1">
 <span>Click</span> <span class="material-symbols-outlined text-[10px]">touch_app</span> <span>to Navigate</span>
 </div>
+
+<!-- Blog Link below the map -->
+<a href="{% url 'blog:post_list' %}" class="absolute -bottom-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-white/90 font-bold bg-indigo-600/90 backdrop-blur-md px-5 py-2 rounded-full border border-indigo-400/30 shadow-[0_0_15px_rgba(79,70,229,0.4)] transition-all duration-300 z-[30] hover:-translate-y-1 hover:bg-indigo-500 hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] cursor-pointer flex items-center gap-2 pointer-events-auto">
+<span class="material-symbols-outlined text-[12px]">article</span> <span>Read Our Blog</span>
+</a>
 </div>
 </div>
 <!-- Navigation Action Buttons -->
-<div class="fixed bottom-8 right-8 z-[100] flex gap-4">
-    <button id="nav-prev" class="w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 transition-all duration-300 opacity-50 cursor-not-allowed">
+<div class="fixed bottom-8 right-8 z-[99999] flex gap-4 pointer-events-auto">
+    <button id="nav-prev" class="pointer-events-auto w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 transition-all duration-300 opacity-50 cursor-not-allowed">
         <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-    <button id="nav-next" class="w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 hover:scale-110 transition-all duration-300">
+    <button id="nav-next" class="pointer-events-auto w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 hover:scale-110 transition-all duration-300">
         <span class="material-symbols-outlined text-2xl">arrow_forward</span>
     </button>
 </div>
