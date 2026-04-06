@@ -31,7 +31,7 @@
     </script>
 <link href="{% static 'css/journal1.css' %}" rel="stylesheet"/>
 <link href="{% static 'css/tailwind.css' %}" rel="stylesheet"/></head>
-<body class="antialiased selection:bg-forest selection:text-white bg-[#0b1120]">
+<body class="antialiased selection:bg-forest selection:text-white bg-[#0b1120] overflow-hidden">
   <a href="{% url 'blog:post_list' %}" class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-black font-semibold hover:bg-white transition shadow-lg">Blog</a>
 <!-- Fixed UI Layer -->
 <div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
@@ -58,18 +58,22 @@
 <div class="map-dot" data-label="Begin Your Journey" id="map-dot-8"></div>
 <!-- Scroll text at the bottom center of the map, below the M dip -->
 <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.2em] text-yellow-500/90 font-bold bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg transition-all duration-[3000ms] z-[30] group-hover/nav:-translate-y-1 hover:text-yellow-400 cursor-default flex items-center gap-1">
-<span>Scroll</span> <span class="material-symbols-outlined text-[10px]">mouse</span> <span>to Navigate</span>
+<span>Click</span> <span class="material-symbols-outlined text-[10px]">touch_app</span> <span>to Navigate</span>
 </div>
 </div>
 </div>
-<!-- Scroll To Top Action Button -->
-<button class="fixed bottom-8 right-8 w-14 h-14 bg-forest text-slate-100 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 transition-all duration-300 z-[100] opacity-0 pointer-events-none translate-y-4" id="scroll-to-top">
-<span class="material-symbols-outlined text-2xl">arrow_upward</span>
-</button>
+<!-- Navigation Action Buttons -->
+<div class="fixed bottom-8 right-8 z-[100] flex gap-4">
+    <button id="nav-prev" class="w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 transition-all duration-300 opacity-50 cursor-not-allowed">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <button id="nav-next" class="w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 hover:scale-110 transition-all duration-300">
+        <span class="material-symbols-outlined text-2xl">arrow_forward</span>
+    </button>
+</div>
 
 
 <!-- The sliding 2D world -->
-<div id="scroll-proxy" style="position: absolute; top: 0; left: 0; width: 1px; height: 3600vh; z-index: -1;"></div>
 <div id="canvas-world" class="fixed inset-0 overflow-hidden pointer-events-none">
 <!-- Giant Glowing Background Path -->
 <svg style="position: absolute; top: 0; left: 0; width: 500vw; height: 400vh; pointer-events: none; z-index: 1;" viewBox="0 0 500 400" preserveAspectRatio="none">
