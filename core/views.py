@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from blog.models import Post
+from .models import Station
 
 def index(request):
-    latest_posts = Post.objects.all()[:3]
-    return render(request, 'core/journal1.html', {'latest_posts': latest_posts})
+    stations = Station.objects.all().order_by('order')
+    return render(request, 'core/journal1.html', {'stations': stations})

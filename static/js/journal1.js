@@ -1,42 +1,39 @@
 function initJournal() {
-    const dots = [
-        document.getElementById('map-dot-0'),
-        document.getElementById('map-dot-1'),
-        document.getElementById('map-dot-2'),
-        document.getElementById('map-dot-3'),
-        document.getElementById('map-dot-4'),
-        document.getElementById('map-dot-5'),
-        document.getElementById('map-dot-6'),
-        document.getElementById('map-dot-7'),
-        document.getElementById('map-dot-8')
-    ];
+    const dots = document.querySelectorAll('.map-dot');
+    const stations = document.querySelectorAll('.station');
+    const points = [];
 
-    const stations = [
-        document.getElementById('station-1'),
-        document.getElementById('station-2'),
-        document.getElementById('station-3'),
-        document.getElementById('station-4'),
-        document.getElementById('station-5'),
-        document.getElementById('station-6'),
-        document.getElementById('station-7'),
-        document.getElementById('station-8'),
-        document.getElementById('station-9')
-    ];
+    // Parse coordinates and position the dots physically on the map
+    stations.forEach((station, index) => {
+        const x = parseInt(station.getAttribute('data-x'));
+        const y = parseInt(station.getAttribute('data-y'));
+        points.push({ x: x, y: y });
 
-    const points = [
-        { x: 0, y: -300 },      // Station 1
-        { x: 0, y: -150 },      // Station 2
-        { x: 0, y: 0 },         // Station 3
-        { x: -100, y: -150 },   // Station 4
-        { x: -200, y: -300 },   // Station 5
-        { x: -300, y: -150 },   // Station 6
-        { x: -400, y: 0 },      // Station 7
-        { x: -400, y: -150 },   // Station 8
-        { x: -400, y: -300 }    // Station 9
-    ];
+        // Ensure station physical position matches coordinates on the canvas
+        // x and y are the camera offset, meaning the station needs to be placed positively on the canvas
+        station.style.left = `${Math.abs(x)}vw`;
+        station.style.top = `${Math.abs(y)}vh`;
+    });
 
     // State
     let currentStationIndex = 0; // The integer index (0-8) we are heading towards
+
+    dots.forEach((dot, index) => {
+        const pt = points[index];
+        // points x is 0 to -400vw, map to 10% to 90%
+        // points y is 0 to -300vh, map to 10% to 90%
+        // 0vw -> 10%, -400vw -> 90%
+        const leftPercent = 10 + (Math.abs(pt.x) / 400) * 80;
+
+        // Y mapping: 0vh -> top: 10%, -300vh -> top: 90% (which means bottom: 10%)
+        // Because the original dots used bottom/top CSS properties
+        const topPercent = 10 + (Math.abs(pt.y) / 300) * 80;
+
+        dot.style.left = `${leftPercent}%`;
+        dot.style.top = `${topPercent}%`;
+        dot.style.bottom = 'auto'; // override any hardcoded css
+    });
+
     let currentProgress = 0.0;   // The float representing our lerped position (0.0 - 8.0)
 
     // Elements
