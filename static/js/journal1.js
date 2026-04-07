@@ -142,6 +142,45 @@ function initJournal() {
     }
 
 
+    // Handle mouse wheel for discrete station jumping
+    let isWheeling = false;
+    let wheelTimeout;
+
+    window.addEventListener('wheel', (e) => {
+        // Only prevent default if we're not scrolling inside a station card
+        const isStationScroll = e.target.closest('.station-content');
+        if (!isStationScroll) {
+            e.preventDefault();
+        }
+
+        if (isWheeling) return;
+
+        // If trying to scroll down
+        if (e.deltaY > 50) {
+            if (currentStationIndex < stations.length - 1) {
+                isWheeling = true;
+                currentStationIndex++;
+                updateButtonStates();
+            }
+        }
+        // If trying to scroll up
+        else if (e.deltaY < -50) {
+            if (currentStationIndex > 0) {
+                isWheeling = true;
+                currentStationIndex--;
+                updateButtonStates();
+            }
+        }
+
+        // Debounce / lock the wheel so one flick = one station
+        if (isWheeling) {
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                isWheeling = false;
+            }, 1000); // 1 second lockout between wheel jumps to let animation finish
+        }
+    }, { passive: false });
+
     function renderLoop() {
         // Smooth lerping factor (butter smooth animation towards the target index)
         currentProgress += (currentStationIndex - currentProgress) * 0.05;
