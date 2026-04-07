@@ -48,7 +48,7 @@ body {
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            /* Removed justify-content: center to fix scrolling empty space bug */
             padding: clamp(1rem, 5vw, 4rem);
             z-index: 10;
             box-sizing: border-box;
@@ -90,7 +90,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Removed justify-content: center to fix scrolling empty space bug */
   opacity: 1;
   /* Always visible in the new scroll system */
   transform: none;
