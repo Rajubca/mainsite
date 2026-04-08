@@ -20,7 +20,7 @@ class StationAdmin(admin.ModelAdmin):
             'description': 'Use standard CSS values like 100%, 800px, auto, or 90vh.'
         }),
         ('Appearance & Animation', {
-            'fields': ('bg_color', 'border_color', 'text_color', 'blur_backdrop', 'animation_style')
+            'fields': ('bg_color', 'border_color', 'text_color', 'blur_backdrop', 'animation_style', 'custom_css')
         }),
     )
 

@@ -116,7 +116,9 @@
             padding: {{ station.padding }};
             backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;
             -webkit-backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;
+            {% if station.custom_css %}{{ station.custom_css|safe }}{% endif %}
          "
+
          data-animation="{{ station.animation_style }}">
 
         <div style="position:relative;z-index:1;margin:auto 0;">
