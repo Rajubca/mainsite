@@ -104,7 +104,7 @@
 {% for station in stations %}
 <section class="station absolute inset-0 flex items-center justify-center p-4 md:p-12 pointer-events-none" id="station-{{ forloop.counter0 }}" data-x="{{ station.x_position }}" data-y="{{ station.y_position }}">
     <div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
-    <div class="station-content pointer-events-auto flex flex-col justify-center relative"
+    <div class="station-content pointer-events-auto flex flex-col justify-center relative overflow-hidden"
          style="
             background: {{ station.bg_color }} !important;
             border-color: {{ station.border_color }} !important;
