@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 from .models import Station, SiteSettings
 
 @admin.register(Station)
@@ -26,11 +27,11 @@ class StationAdmin(admin.ModelAdmin):
         }),
     )
 
-    @never_cache
+    @method_decorator(never_cache)
     def changelist_view(self, request, extra_context=None):
         return super().changelist_view(request, extra_context)
 
-    @never_cache
+    @method_decorator(never_cache)
     def change_view(self, request, object_id, form_url='', extra_context=None):
         return super().change_view(request, object_id, form_url, extra_context)
 
