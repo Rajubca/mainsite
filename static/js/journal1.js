@@ -16,7 +16,27 @@ function initJournal() {
     });
 
     // State
-    let currentStationIndex = 0; // The integer index (0-8) we are heading towards
+    let currentStationIndex = 0;
+
+    // Dynamically position minimap dots using points array limits
+    // Wait, the SVG has a hardcoded M shape path!
+    // If they change coordinates, the M path SVG stays the same,
+    // so the dots will fly off the line unless they match perfectly!
+    // I'll keep the dot positioning dynamic to the coordinates relative to the 400vw/300vh box:
+    const maxX = Math.max(1, ...points.map(p => Math.abs(p.x)));
+    const maxY = Math.max(1, ...points.map(p => Math.abs(p.y)));
+
+    dots.forEach((dot, index) => {
+        if (index < points.length) {
+            const pt = points[index];
+            const leftPercent = 10 + (Math.abs(pt.x) / maxX) * 80;
+            const topPercent = 10 + (Math.abs(pt.y) / maxY) * 80;
+            dot.style.left = `${leftPercent}%`;
+            dot.style.top = `${topPercent}%`;
+            dot.style.bottom = 'auto';
+        }
+    });
+
 
     dots.forEach((dot, index) => {
         const pt = points[index];
@@ -84,60 +104,6 @@ function initJournal() {
             updateButtonStates();
         });
     });
-
-    // --- Draggable Navigation Logic (for the mini-map) ---
-    const navOverlay = document.getElementById('nav-overlay');
-    let isDragging = false;
-    let currentX, currentY, initialX, initialY;
-    let xOffset = 0, yOffset = 0;
-
-    navOverlay.addEventListener('mousedown', dragStart);
-    navOverlay.addEventListener('touchstart', dragStart, {passive: false});
-
-    window.addEventListener('mousemove', drag);
-    window.addEventListener('touchmove', drag, {passive: false});
-    window.addEventListener('mouseup', dragEnd);
-    window.addEventListener('touchend', dragEnd);
-
-    function dragStart(e) {
-        if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.map-dot')) {
-            return;
-        }
-        if (e.type === "touchstart") {
-            initialX = e.touches[0].clientX - xOffset;
-            initialY = e.touches[0].clientY - yOffset;
-        } else {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-        }
-        if (e.target.closest('#nav-overlay')) {
-            isDragging = true;
-            if(e.type !== "touchstart") e.preventDefault();
-        }
-    }
-
-    function drag(e) {
-        if (isDragging) {
-            if (e.type === "touchmove") {
-                e.preventDefault();
-                currentX = e.touches[0].clientX - initialX;
-                currentY = e.touches[0].clientY - initialY;
-            } else {
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-            }
-            xOffset = currentX;
-            yOffset = currentY;
-            navOverlay.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
-        }
-    }
-
-    function dragEnd() {
-        initialX = currentX;
-        initialY = currentY;
-        isDragging = false;
-    }
-
 
     function renderLoop() {
         // Smooth lerping factor (butter smooth animation towards the target index)
