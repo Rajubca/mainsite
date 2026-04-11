@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.views.decorators.cache import never_cache
 from .models import Station, SiteSettings
 
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
+
     list_display = ('order', 'title', 'x_position', 'y_position', 'animation_style')
     list_display_links = ('title',)
     list_editable = ('order', 'x_position', 'y_position', 'animation_style')
@@ -23,6 +25,14 @@ class StationAdmin(admin.ModelAdmin):
             'fields': ('bg_color', 'border_color', 'text_color', 'blur_backdrop', 'animation_style', 'custom_css')
         }),
     )
+
+    @never_cache
+    def changelist_view(self, request, extra_context=None):
+        return super().changelist_view(request, extra_context)
+
+    @never_cache
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        return super().change_view(request, object_id, form_url, extra_context)
 
 
 @admin.register(SiteSettings)
