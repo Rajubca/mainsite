@@ -70,9 +70,9 @@ class Station(models.Model):
     overflow_behavior = models.CharField(max_length=20, choices=OVERFLOW_CHOICES, default='auto')
 
     # Appearance Styling
-    bg_color = models.CharField(max_length=50, default='rgba(15, 23, 42, 0.6)', help_text="CSS Background Color/Gradient")
-    border_color = models.CharField(max_length=50, default='rgba(255, 255, 255, 0.1)', help_text="CSS Border Color")
-    text_color = models.CharField(max_length=50, default='#f8fafc', help_text="CSS Text Color (Hex/Rgba)")
+    bg_color = models.CharField(max_length=50, default='#0f172a', help_text="Hex Color code for background (e.g. #0f172a)")
+    border_color = models.CharField(max_length=50, default='#ffffff', help_text="Hex Color code for border (e.g. #ffffff)")
+    text_color = models.CharField(max_length=50, default='#f8fafc', help_text="Hex Color code for text (e.g. #f8fafc)")
 
     # Custom Effects
     animation_style = models.CharField(max_length=20, choices=ANIMATION_CHOICES, default='dangle')

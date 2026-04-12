@@ -3,8 +3,27 @@ from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from .models import Station, SiteSettings
 
+from django.forms.widgets import Input
+from django import forms
+
+class ColorWidget(Input):
+    input_type = 'color'
+    template_name = 'django/forms/widgets/input.html'
+
+class StationForm(forms.ModelForm):
+    class Meta:
+        model = Station
+        fields = '__all__'
+        widgets = {
+            'bg_color': ColorWidget(),
+            'border_color': ColorWidget(),
+            'text_color': ColorWidget(),
+        }
+
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
+    form = StationForm
+
 
     list_display = ('order', 'title', 'x_position', 'y_position', 'animation_style')
     list_display_links = ('title',)
