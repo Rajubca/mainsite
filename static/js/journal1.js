@@ -107,7 +107,8 @@ function initJournal() {
 
     function renderLoop() {
         // Smooth lerping factor (butter smooth animation towards the target index)
-        currentProgress += (currentStationIndex - currentProgress) * 0.05;
+        const speed = window.SHIVA_CONFIG?.cameraSpeed || 0.05;
+        currentProgress += (currentStationIndex - currentProgress) * speed;
 
         // Calculate Camera Panning
         const totalSegments = points.length - 1;

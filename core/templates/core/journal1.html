@@ -101,6 +101,12 @@
 </svg>
 
 <!-- Dynamic Canvas World Stations -->
+<script>
+    // Injected Backend Settings
+    window.SHIVA_CONFIG = {
+        cameraSpeed: {{ site_settings.camera_speed|default:0.05 }}
+    };
+</script>
 {% for station in stations %}
 <section class="station absolute inset-0 flex items-center justify-center p-4 md:p-12 pointer-events-none" id="station-{{ forloop.counter0 }}" data-x="{{ station.x_position }}" data-y="{{ station.y_position }}">
     <div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>

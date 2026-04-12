@@ -12,6 +12,12 @@ class SiteSettings(models.Model):
     instagram_url = models.URLField(blank=True, null=True, help_text="Instagram Profile URL")
     linkedin_url = models.URLField(blank=True, null=True, help_text="LinkedIn Profile URL")
 
+    # M-Path Settings
+    camera_speed = models.FloatField(
+        default=0.05,
+        help_text="Controls how fast the camera pans between stations (0.01 is extremely slow, 0.10 is very fast, default 0.05)."
+    )
+
     class Meta:
         verbose_name = 'Site Settings'
         verbose_name_plural = 'Site Settings'
