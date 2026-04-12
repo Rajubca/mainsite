@@ -105,6 +105,77 @@ function initJournal() {
         });
     });
 
+    // --- Draggable Navigation Logic (for the mini-map) ---
+    const navOverlay = document.getElementById('nav-overlay');
+    let isDragging = false;
+    let currentX, currentY, initialX, initialY;
+    let xOffset = 0, yOffset = 0;
+
+    if (navOverlay) {
+        navOverlay.addEventListener('mousedown', dragStart);
+        navOverlay.addEventListener('touchstart', dragStart, {passive: false});
+
+        window.addEventListener('mousemove', drag);
+        window.addEventListener('touchmove', drag, {passive: false});
+        window.addEventListener('mouseup', dragEnd);
+        window.addEventListener('touchend', dragEnd);
+    }
+
+    function dragStart(e) {
+        if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.map-dot')) {
+            return;
+        }
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target.closest('#nav-overlay')) {
+            isDragging = true;
+            if(e.type !== "touchstart") e.preventDefault();
+        }
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            if (e.type === "touchmove") {
+                e.preventDefault();
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
+            } else {
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+            }
+
+            // Constrain dragging to the viewport so the menu never glitches off screen!
+            const rect = navOverlay.getBoundingClientRect();
+
+            // The nav is initially positioned with translate-x -50%, so the origin (0,0) is actually in the middle of the screen horizontally.
+            const maxRight = (window.innerWidth / 2) - (rect.width / 2);
+            const maxLeft = -(window.innerWidth / 2) + (rect.width / 2);
+
+            // Y is initially near the top
+            const maxTop = -20; // Allow a little bit of upward movement
+            const maxBottom = window.innerHeight - rect.height - 100;
+
+            currentX = Math.max(maxLeft, Math.min(currentX, maxRight));
+            currentY = Math.max(maxTop, Math.min(currentY, maxBottom));
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            navOverlay.style.transform = `translate3d(calc(-50% + ${currentX}px), ${currentY}px, 0)`;
+        }
+    }
+
+    function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+    }
+
     function renderLoop() {
         // Smooth lerping factor (butter smooth animation towards the target index)
         const speed = window.SHIVA_CONFIG?.cameraSpeed || 0.05;
