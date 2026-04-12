@@ -18,6 +18,9 @@ class StationForm(forms.ModelForm):
             'bg_color': ColorWidget(),
             'border_color': ColorWidget(),
             'text_color': ColorWidget(),
+            'mobile_bg_color': ColorWidget(),
+            'mobile_border_color': ColorWidget(),
+            'mobile_text_color': ColorWidget(),
         }
 
 @admin.register(Station)
@@ -43,6 +46,14 @@ class StationAdmin(admin.ModelAdmin):
         }),
         ('Appearance & Animation', {
             'fields': ('bg_color', 'border_color', 'text_color', 'blur_backdrop', 'animation_style', 'custom_css')
+        }),
+        ('Mobile Specific Layout (Optional)', {
+            'fields': ('mobile_width', 'mobile_height', 'mobile_max_height', 'mobile_padding'),
+            'description': 'Leave these blank to fall back to the default desktop dimensions. Overrides apply on screens smaller than 768px.'
+        }),
+        ('Mobile Specific Appearance (Optional)', {
+            'fields': ('mobile_bg_color', 'mobile_border_color', 'mobile_text_color', 'mobile_custom_css'),
+            'description': 'Leave color fields blank to use the desktop colors.'
         }),
     )
 

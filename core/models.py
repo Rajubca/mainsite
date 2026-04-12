@@ -85,6 +85,18 @@ class Station(models.Model):
     blur_backdrop = models.CharField(max_length=50, default='24px', help_text="Backdrop blur amount (e.g. '24px', '0px' for none)")
     custom_css = models.TextField(blank=True, null=True, help_text="Add any custom raw CSS properties here (e.g. 'box-shadow: 0 0 50px red;'). Applied directly to the station card.")
 
+    # Mobile Layout Overrides
+    mobile_width = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Width override (e.g. '95vw', '100%'). Blank uses desktop value.")
+    mobile_height = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Height override (e.g. 'auto', '70vh'). Blank uses desktop value.")
+    mobile_max_height = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Max Height override (e.g. '85vh'). Blank uses desktop value.")
+    mobile_padding = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Padding override (e.g. '1.5rem'). Blank uses desktop value.")
+
+    # Mobile Appearance Overrides
+    mobile_bg_color = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Background Hex Color. Blank uses desktop value.")
+    mobile_border_color = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Border Hex Color. Blank uses desktop value.")
+    mobile_text_color = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Text Hex Color. Blank uses desktop value.")
+    mobile_custom_css = models.TextField(blank=True, null=True, help_text="Raw CSS to apply ONLY on screens smaller than 768px.")
+
     class Meta:
         ordering = ['order']
         verbose_name = 'Station Map Point'
