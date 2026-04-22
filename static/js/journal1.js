@@ -176,7 +176,28 @@ function initJournal() {
         isDragging = false;
     }
 
+
+
+
+    // Implement hover freeze logic reliably via CSS class toggle
+    stations.forEach(station => {
+        const content = station.querySelector('.station-content');
+        if (content) {
+            content.addEventListener('mouseenter', () => {
+                if (content.getAttribute('data-freeze') === 'True' || content.getAttribute('data-freeze') === 'true') {
+                    content.classList.add('is-frozen');
+                }
+            });
+            content.addEventListener('mouseleave', () => {
+                content.classList.remove('is-frozen');
+            });
+        }
+    });
+
     function renderLoop() {
+
+
+
         // Smooth lerping factor (butter smooth animation towards the target index)
         const speed = window.SHIVA_CONFIG?.cameraSpeed || 0.05;
         currentProgress += (currentStationIndex - currentProgress) * speed;

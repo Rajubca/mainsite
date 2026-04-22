@@ -91,6 +91,7 @@ class Station(models.Model):
 
     # Custom Effects
     animation_style = models.CharField(max_length=20, choices=ANIMATION_CHOICES, default='dangle')
+    freeze_on_hover = models.BooleanField(default=False, help_text="If checked, the animation (dangle, float, pulse) will pause/freeze while the user's mouse is hovering over the section.")
     blur_backdrop = models.CharField(max_length=50, default='24px', help_text="Backdrop blur amount (e.g. '24px', '0px' for none)")
     custom_css = models.TextField(blank=True, null=True, help_text="Add any custom raw CSS properties here (e.g. 'box-shadow: 0 0 50px red;'). Applied directly to the station card.")
 

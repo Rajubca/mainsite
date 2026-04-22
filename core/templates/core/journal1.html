@@ -127,7 +127,7 @@
             {% if station.custom_css %}{{ station.custom_css|safe }}{% endif %}
          "
 
-         data-animation="{{ station.animation_style }}">
+         data-animation="{{ station.animation_style }}" data-freeze="{{ station.freeze_on_hover|yesno:'true,false' }}">
 
         <div style="position:relative;z-index:1;margin:auto 0;">
             {% if station.eyebrow %}

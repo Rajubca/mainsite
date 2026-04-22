@@ -1039,3 +1039,11 @@ body {
     visibility: hidden;
     pointer-events: none !important;
 }
+.station-content:hover {
+    animation-play-state: paused !important;
+}
+
+/* Pause animations on hover class */
+.is-frozen {
+    animation-play-state: paused !important;
+}
