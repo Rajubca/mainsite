@@ -790,9 +790,11 @@ body {
 
 @media (max-width: 768px) {
 
+
   /* Reset auto margin on mobile so overflowing content starts cleanly at the top and doesn't hide the title off-screen! */
-  .station-content > div[style*="margin: auto 0"] {
-      margin: 0 !important;
+  .station-content > div {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
   }
   .station-content > div[style*="margin:auto 0"] {
       margin: 0 !important;
