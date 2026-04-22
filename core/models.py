@@ -18,6 +18,15 @@ class SiteSettings(models.Model):
         help_text="Controls how fast the camera pans between stations (0.01 is extremely slow, 0.10 is very fast, default 0.05)."
     )
 
+
+    # Email / SMTP Configuration
+    smtp_host = models.CharField(max_length=255, blank=True, null=True, help_text="e.g. smtp.gmail.com")
+    smtp_port = models.IntegerField(default=587)
+    smtp_user = models.CharField(max_length=255, blank=True, null=True, help_text="SMTP Username")
+    smtp_password = models.CharField(max_length=255, blank=True, null=True, help_text="SMTP Password or App Password")
+    smtp_use_tls = models.BooleanField(default=True)
+    contact_recipient_email = models.EmailField(blank=True, null=True, help_text="Email address that receives contact form submissions")
+
     class Meta:
         verbose_name = 'Site Settings'
         verbose_name_plural = 'Site Settings'
@@ -97,6 +106,8 @@ class Station(models.Model):
     mobile_text_color = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Text Hex Color. Blank uses desktop value.")
     mobile_custom_css = models.TextField(blank=True, null=True, help_text="Raw CSS to apply ONLY on screens smaller than 768px.")
 
+
+
     class Meta:
         ordering = ['order']
         verbose_name = 'Station Map Point'
@@ -104,3 +115,13 @@ class Station(models.Model):
 
     def __str__(self):
         return f"{self.order}: {self.title}"
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Message from {self.name}"

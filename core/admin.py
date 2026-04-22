@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
-from .models import Station, SiteSettings
+from .models import Station, SiteSettings, ContactMessage
 
 from django.forms.widgets import Input
 from django import forms
@@ -73,4 +73,12 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         return False if self.model.objects.count() > 0 else super().has_add_permission(request)
 
     def has_delete_permission(self, request, obj=None):
+        return False
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'created_at')
+    readonly_fields = ('name', 'email', 'message', 'created_at')
+
+    def has_add_permission(self, request):
         return False

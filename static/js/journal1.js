@@ -286,3 +286,73 @@ if (document.readyState === "loading") {
 } else {
     initJournal();
 }
+
+// Handle Form Submission
+window.handleSubmit = function(btn) {
+    const name = document.getElementById('c-name').value;
+    const email = document.getElementById('c-email').value;
+    const msg = document.getElementById('c-msg').value;
+    const status = document.getElementById('form-status');
+
+    if (!name || !email || !msg) {
+        status.style.display = 'block';
+        status.style.color = '#ef4444'; // Tailwind red-500
+        status.innerText = 'Please complete all fields.';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'Transmitting...';
+    status.style.display = 'none';
+
+    // Get CSRF token from cookies
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+
+    const csrftoken = getCookie('csrftoken');
+
+    fetch('/api/contact/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ name: name, email: email, message: msg })
+    })
+    .then(response => response.json())
+    .then(data => {
+        status.style.display = 'block';
+        if (data.success) {
+            status.style.color = '#10b981'; // Tailwind green-500
+            status.innerText = data.success;
+            // Clear form
+            document.getElementById('c-name').value = '';
+            document.getElementById('c-email').value = '';
+            document.getElementById('c-msg').value = '';
+        } else {
+            status.style.color = '#ef4444';
+            status.innerText = data.error || 'Transmission failed.';
+        }
+    })
+    .catch(error => {
+        status.style.display = 'block';
+        status.style.color = '#ef4444';
+        status.innerText = 'Connection error. Please try again.';
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerText = 'Initiate Transmission';
+    });
+};
