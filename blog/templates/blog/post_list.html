@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Our Journal & Blogs{% endblock %}
+{% block title %}{{ site_settings.site_name|default:"Our Journal" }} Blogs{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
+        <div class="text-center mb-16">
             <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-                Our Journal
+                {{ site_settings.site_name|default:"Our Journal" }} Blogs
             </h1>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400 sm:mt-4 mb-8">
                 Discover the latest stories, insights, and updates from our team.
@@ -15,19 +15,29 @@
 
             <!-- Category Filter -->
             <div class="flex flex-wrap justify-center gap-2 mt-6">
-                <a href="{% url 'blog:post_list' %}" class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors {% if not active_category %}bg-indigo-600 text-white shadow-md{% else %}bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors duration-300{% endif %}">
+                <a href="{% url 'blog:post_list' %}" class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors {% if not active_category %}bg-indigo-600 text-white shadow-md{% else %}bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors duration-300{% endif %}" data-category="">
                     All Areas
                 </a>
                 {% for cat in categories %}
-                <a href="?category={{ cat.slug }}" class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors {% if active_category == cat %}bg-indigo-600 text-white shadow-md{% else %}bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors duration-300{% endif %}">
+                <a href="?category={{ cat.slug }}" class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors {% if active_category == cat %}bg-indigo-600 text-white shadow-md{% else %}bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors duration-300{% endif %}" data-category="{{ cat.slug }}">
                     {{ cat.name }}
                 </a>
                 {% endfor %}
             </div>
         </div>
 
-                <div id="post-grid-container" class="grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+        <div id="post-grid-container" class="grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             {% include 'blog/post_list_partial.html' %}
+        </div>
+
+        <div id="loading-spinner" class="hidden flex justify-center items-center py-12">
+            <svg class="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+        <div id="end-message" class="hidden text-center py-8 text-gray-500 dark:text-gray-400">
+            You have reached the end.
         </div>
     </div>
 </div>
@@ -36,11 +46,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     const filterLinks = document.querySelectorAll('.category-filter');
     const gridContainer = document.getElementById('post-grid-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const endMessage = document.getElementById('end-message');
 
+    let currentPage = 1;
+    let hasNextPage = {{ has_next|yesno:"true,false" }};
+    let currentCategory = "{{ active_category.slug|default:'' }}";
+    let isLoading = false;
+
+    // Filter functionality
     filterLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const url = this.getAttribute('href');
+            currentCategory = this.getAttribute('data-category');
+            currentPage = 1;
 
             // Reset all buttons to inactive state
             filterLinks.forEach(btn => {
@@ -52,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Show a quick loading state or opacity fade
             gridContainer.style.opacity = '0.5';
+            endMessage.classList.add('hidden');
 
             fetch(url, {
                 headers: {
@@ -59,6 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .then(response => {
+                // Get custom header or look for markers in html
+                hasNextPage = response.headers.get('X-Has-Next') === 'true';
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.text();
             })
@@ -66,6 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 gridContainer.innerHTML = html;
                 gridContainer.style.opacity = '1';
                 window.history.pushState({path: url}, '', url);
+
+                // Set hasNextPage from the rendered partial (we'll embed it in the HTML)
+                const hasNextElement = document.getElementById('has-next-page-data');
+                if (hasNextElement) {
+                    hasNextPage = hasNextElement.getAttribute('data-has-next') === 'true';
+                    hasNextElement.remove();
+                }
             })
             .catch(error => {
                 console.error('Error fetching posts:', error);
@@ -73,6 +103,69 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Infinite scroll functionality
+    window.addEventListener('scroll', () => {
+        if (isLoading || !hasNextPage) return;
+
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+        // Trigger fetch when user is 100px from bottom
+        if (scrollTop + clientHeight >= scrollHeight - 100) {
+            loadMorePosts();
+        }
+    });
+
+    function loadMorePosts() {
+        isLoading = true;
+        loadingSpinner.classList.remove('hidden');
+        currentPage++;
+
+        let url = `?page=${currentPage}`;
+        if (currentCategory) {
+            url += `&category=${currentCategory}`;
+        }
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(html => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Extract the next page flag
+            const hasNextElement = tempDiv.querySelector('#has-next-page-data');
+            if (hasNextElement) {
+                hasNextPage = hasNextElement.getAttribute('data-has-next') === 'true';
+                hasNextElement.remove();
+            } else {
+                hasNextPage = false;
+            }
+
+            // Append new posts to grid
+            while (tempDiv.firstChild) {
+                gridContainer.appendChild(tempDiv.firstChild);
+            }
+
+            isLoading = false;
+            loadingSpinner.classList.add('hidden');
+
+            if (!hasNextPage) {
+                endMessage.classList.remove('hidden');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching more posts:', error);
+            isLoading = false;
+            loadingSpinner.classList.add('hidden');
+        });
+    }
 
     window.addEventListener('popstate', function() {
         window.location.reload();
