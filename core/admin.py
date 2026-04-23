@@ -68,6 +68,13 @@ class StationAdmin(admin.ModelAdmin):
 
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ("Site Identity", {"fields": ("site_name",)}),
+        ("Contact Info", {"fields": ("email", "phone", "address")}),
+        ("Social Media", {"fields": ("facebook_url", "twitter_url", "instagram_url", "linkedin_url")}),
+        ("M-Path Settings", {"fields": ("camera_speed",)}),
+        ("Email / SMTP Configuration", {"fields": ("smtp_host", "smtp_port", "smtp_user", "smtp_password", "smtp_use_tls", "contact_recipient_email")}),
+    )
     # To prevent creating multiple settings
     def has_add_permission(self, request):
         return False if self.model.objects.count() > 0 else super().has_add_permission(request)

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Site{% endblock %}</title>
+    <title>{% block title %}{{ site_settings.site_name|default:"My Site" }}{% endblock %}</title>
     <link href="{% static 'css/journal1.css' %}" rel="stylesheet">
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
     <script>
@@ -18,7 +18,7 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 font-sans text-gray-900 dark:text-gray-100 antialiased min- transition-colors duration-300">
         <nav class="p-4 bg-white dark:bg-gray-800 shadow-md fixed top-0 w-full flex justify-between items-center transition-colors duration-300" style="z-index: 1000000;">
-        <a href="{% url 'index' %}" class="text-xl font-bold text-gray-800 dark:text-white flex-shrink-0">My Site</a>
+        <a href="{% url 'index' %}" class="text-xl font-bold text-gray-800 dark:text-white flex-shrink-0">{{ site_settings.site_name|default:"My Site" }}</a>
         <div class="flex items-center space-x-2 sm:space-x-4">
             <a href="{% url 'index' %}" class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Home</a>
             <a href="{% url 'blog:post_list' %}" class="text-sm sm:text-base text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Blog</a>
