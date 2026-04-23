@@ -109,6 +109,52 @@
     };
 </script>
 {% for station in stations %}
+<style>
+    /* DESKTOP (min-width 769px) - Apply desktop overflow behavior to the OUTER container */
+    @media (min-width: 769px) {
+        #station-{{ forloop.counter0 }} .station-content {
+            overflow-y: {{ station.overflow_behavior }} !important;
+            justify-content: center !important;
+        }
+    }
+
+    /* MOBILE (max-width 768px) - Apply mobile overflow behavior to the INNER container */
+    @media (max-width: 768px) {
+        #station-{{ forloop.counter0 }} .station-content {
+            {% if station.mobile_width %}width: {{ station.mobile_width }} !important;{% endif %}
+            {% if station.mobile_height %}height: {{ station.mobile_height }} !important;{% endif %}
+            {% if station.mobile_max_height %}max-height: {{ station.mobile_max_height }} !important;{% endif %}
+            {% if station.mobile_padding %}padding: {{ station.mobile_padding }} !important;{% endif %}
+
+            {% if station.mobile_bg_color %}background: {{ station.mobile_bg_color }}cc !important;{% endif %}
+            {% if station.mobile_border_color %}border-color: {{ station.mobile_border_color }}44 !important;{% endif %}
+            {% if station.mobile_text_color %}color: {{ station.mobile_text_color }} !important;{% endif %}
+
+            {% if station.mobile_custom_css %}{{ station.mobile_custom_css|safe }}{% endif %}
+
+            overflow: hidden !important; /* Lock the outer boundary on mobile to prevent padding glitches */
+            justify-content: flex-start !important;
+        }
+
+        #station-{{ forloop.counter0 }} .station-content > div {
+            overflow-y: {{ station.mobile_overflow_behavior }} !important;
+            overflow-x: hidden !important;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            max-height: 100%;
+            width: 100%;
+        }
+
+        /* Hide scrollbar for inner content */
+        #station-{{ forloop.counter0 }} .station-content > div::-webkit-scrollbar {
+            display: none;
+        }
+        #station-{{ forloop.counter0 }} .station-content > div {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    }
+</style>
 <section class="station absolute inset-0 flex items-center justify-center p-4 md:p-12 pointer-events-none" id="station-{{ forloop.counter0 }}" data-x="{{ station.x_position }}" data-y="{{ station.y_position }}">
     <div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
     <div class="station-content pointer-events-auto flex flex-col relative overflow-hidden"
@@ -120,7 +166,6 @@
             max-width: {{ station.max_width }};
             height: {{ station.height }};
             max-height: {{ station.max_height }};
-            overflow-y: {{ station.overflow_behavior }} !important;
             padding: {{ station.padding }};
             backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;
             -webkit-backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;

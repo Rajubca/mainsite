@@ -48,7 +48,7 @@ class StationAdmin(admin.ModelAdmin):
             'fields': ('bg_color', 'border_color', 'text_color', 'blur_backdrop', 'animation_style', 'freeze_on_hover', 'custom_css')
         }),
         ('Mobile Specific Layout (Optional)', {
-            'fields': ('mobile_width', 'mobile_height', 'mobile_max_height', 'mobile_padding'),
+            'fields': ('mobile_width', 'mobile_height', 'mobile_max_height', 'mobile_padding', 'mobile_overflow_behavior'),
             'description': 'Leave these blank to fall back to the default desktop dimensions. Overrides apply on screens smaller than 768px.'
         }),
         ('Mobile Specific Appearance (Optional)', {

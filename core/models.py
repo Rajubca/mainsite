@@ -82,7 +82,7 @@ class Station(models.Model):
 
     # Internal Layout
     padding = models.CharField(max_length=50, default='3rem', help_text="CSS Padding (e.g. '2rem', '3rem 4rem')")
-    overflow_behavior = models.CharField(max_length=20, choices=OVERFLOW_CHOICES, default='auto')
+    overflow_behavior = models.CharField(max_length=20, choices=OVERFLOW_CHOICES, default='auto', help_text="Overflow behavior on desktop screens.")
 
     # Appearance Styling
     bg_color = models.CharField(max_length=50, default='#0f172a', help_text="Hex Color code for background (e.g. #0f172a)")
@@ -100,6 +100,7 @@ class Station(models.Model):
     mobile_height = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Height override (e.g. 'auto', '70vh'). Blank uses desktop value.")
     mobile_max_height = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Max Height override (e.g. '85vh'). Blank uses desktop value.")
     mobile_padding = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Padding override (e.g. '1.5rem'). Blank uses desktop value.")
+    mobile_overflow_behavior = models.CharField(max_length=20, choices=OVERFLOW_CHOICES, default='auto', help_text="Overflow behavior specifically on mobile screens.")
 
     # Mobile Appearance Overrides
     mobile_bg_color = models.CharField(max_length=50, blank=True, null=True, help_text="Mobile Background Hex Color. Blank uses desktop value.")
