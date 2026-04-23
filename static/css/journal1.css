@@ -1047,3 +1047,19 @@ body {
 .is-frozen {
     animation-play-state: paused !important;
 }
+
+@media (max-width: 768px) {
+  .station-content {
+    overflow: hidden !important;
+  }
+  .station-content > div {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    max-height: 100%;
+    width: 100%;
+  }
+  .station-content > div::-webkit-scrollbar { display: none; }
+  .station-content > div { -ms-overflow-style: none; scrollbar-width: none; }
+}
