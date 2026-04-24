@@ -1,0 +1,192 @@
+{% load static %}
+{% load core_tags %}
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SHIVA | A Curated Journal of Excellence - The M Path</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&amp;family=Inter:wght@300;400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        journal: ['Crimson Pro', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Using standard Tailwind colors, but keeping these aliases for legacy class compatibility
+                        parchment: '#0f172a', /* main background */
+                        sepia: '#3b82f6', /* accent blue */
+                        forest: '#eab308', /* accent gold */
+                        ink: '#f8fafc', /* primary text */
+                        muted: '#1e293b', /* card background */
+                    }
+                }
+            }
+        }
+    </script>
+<link href="{% static 'css/journal1.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/tailwind.css' %}" rel="stylesheet"/></head>
+<body class="antialiased selection:bg-forest selection:text-white bg-[#0b1120] overflow-hidden">
+<!-- Preloader -->
+<div id="shiva-loader" class="fixed inset-0 z-[1000000] bg-[#080c14] flex flex-col items-center justify-center transition-all duration-[1000ms] ease-in-out opacity-100 pointer-events-auto">
+    <div class="relative flex flex-col items-center">
+        <!-- Glowing aura behind text -->
+        <div class="absolute inset-0 bg-yellow-500/20 blur-[50px] rounded-full scale-150 animate-pulse"></div>
+        <h1 class="relative font-serif text-5xl md:text-7xl tracking-[0.2em] leading-none text-slate-100 shadow-xl" style="letter-spacing: 0.15em;">SHIVA</h1>
+        <div class="mt-8 flex gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_0ms]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_200ms]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-[bounce_1s_infinite_400ms]"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Fixed UI Layer -->
+<div class="group/nav cursor-grab active:cursor-grabbing" id="nav-overlay">
+<!-- To switch menu styles, change "theme-premium" to "theme-cyberpunk" or "theme-minimal" -->
+    <div class="map-container theme-premium relative">
+<!-- Main Logo Link: Positioned top middle, exactly between the M peaks -->
+<a class="absolute -top-3 left-1/2 -translate-x-1/2 z-[30] text-center bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg hover:bg-slate-800 transition-all duration-[3000ms] text-slate-100 hover:scale-110 hover:border-yellow-500/50" href="../index.html">
+<h1 class="font-serif text-lg tracking-tight leading-none pt-0.5" style="letter-spacing: 0.1em;">SHIVA</h1>
+</a>
+<!-- SVG lines drawing the miniature M -->
+<svg class="map-lines" viewbox="0 0 160 120">
+<!-- Smooth line drawing the M -->
+<path class="transition-all duration-[3000ms]" d="M 16 108 L 16 12 L 80 108 L 144 12 L 144 108" fill="none" stroke="rgba(234, 179, 8, 0.2)" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- Map Dots -->
+{% for station in stations %}
+<div class="map-dot" data-label="{{ station.title }}" id="map-dot-{{ forloop.counter0 }}"></div>
+{% endfor %}
+<!-- Scroll text at the bottom center of the map, below the M dip -->
+<div class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[8px] uppercase tracking-[0.2em] text-yellow-500/90 font-bold bg-slate-900/95 backdrop-blur-md px-4 py-1.5 rounded-full border border-yellow-500/20 shadow-lg transition-all duration-[3000ms] z-[30] group-hover/nav:-translate-y-1 hover:text-yellow-400 cursor-default flex items-center gap-1">
+<span>Click</span> <span class="material-symbols-outlined text-[10px]">touch_app</span> <span>to Navigate</span>
+</div>
+
+<!-- Blog Link below the map -->
+<a href="{% url 'blog:post_list' %}" class="absolute -bottom-14 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-white/90 font-bold bg-indigo-600/90 backdrop-blur-md px-5 py-2 rounded-full border border-indigo-400/30 shadow-[0_0_15px_rgba(79,70,229,0.4)] transition-all duration-300 z-[30] hover:-translate-y-1 hover:bg-indigo-500 hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] cursor-pointer flex items-center gap-2 pointer-events-auto">
+<span class="material-symbols-outlined text-[12px]">article</span> <span>Read Our Blog</span>
+</a>
+</div>
+</div>
+<!-- Navigation Action Buttons -->
+<div class="fixed bottom-8 left-8 z-[99999] pointer-events-auto">
+    <button id="nav-prev" class="pointer-events-auto w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 transition-all duration-300 opacity-50 cursor-not-allowed">
+        <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+</div>
+<div class="fixed bottom-8 right-8 z-[99999] pointer-events-auto">
+    <button id="nav-next" class="pointer-events-auto w-14 h-14 bg-slate-800 text-slate-100 rounded-full shadow-lg border border-yellow-500/20 flex items-center justify-center hover:bg-slate-700 hover:border-yellow-500/50 hover:scale-110 transition-all duration-300">
+        <span class="material-symbols-outlined text-2xl">arrow_forward</span>
+    </button>
+</div>
+
+
+<!-- The sliding 2D world -->
+<div id="canvas-world" class="fixed inset-0 overflow-hidden pointer-events-none">
+<!-- Giant Glowing Background Path -->
+<svg style="position: absolute; top: 0; left: 0; width: 500vw; height: 400vh; pointer-events: none; z-index: 1;" viewBox="0 0 500 400" preserveAspectRatio="none">
+    <path d="M 50 350 L 50 200 L 50 50 L 150 200 L 250 350 L 350 200 L 450 50 L 450 200 L 450 350"
+          fill="none"
+          stroke="rgba(234, 179, 8, 0.4)"
+          stroke-width="1.5"
+          vector-effect="non-scaling-stroke"
+          style="filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.8));" />
+</svg>
+
+<!-- Dynamic Canvas World Stations -->
+<script>
+    // Injected Backend Settings
+    window.SHIVA_CONFIG = {
+        cameraSpeed: {{ site_settings.camera_speed|default:0.05 }}
+    };
+</script>
+{% for station in stations %}
+<style>
+    /* DESKTOP (min-width 769px) - Apply desktop overflow behavior to the OUTER container */
+    @media (min-width: 769px) {
+        #station-{{ forloop.counter0 }} .station-content {
+            overflow-y: {{ station.overflow_behavior }} !important;
+            justify-content: center !important;
+        }
+    }
+
+    /* MOBILE (max-width 768px) - Apply mobile overflow behavior to the INNER container */
+    @media (max-width: 768px) {
+        #station-{{ forloop.counter0 }} .station-content {
+            {% if station.mobile_width %}width: {{ station.mobile_width }} !important;{% endif %}
+            {% if station.mobile_height %}height: {{ station.mobile_height }} !important;{% endif %}
+            {% if station.mobile_max_height %}max-height: {{ station.mobile_max_height }} !important;{% endif %}
+            {% if station.mobile_padding %}padding: {{ station.mobile_padding }} !important;{% endif %}
+
+            {% if station.mobile_bg_color %}background: {{ station.mobile_bg_color }}cc !important;{% endif %}
+            {% if station.mobile_border_color %}border-color: {{ station.mobile_border_color }}44 !important;{% endif %}
+            {% if station.mobile_text_color %}color: {{ station.mobile_text_color }} !important;{% endif %}
+
+            {% if station.mobile_custom_css %}{{ station.mobile_custom_css|safe }}{% endif %}
+
+            overflow: hidden !important; /* Lock the outer boundary on mobile to prevent padding glitches */
+            justify-content: flex-start !important;
+        }
+
+        #station-{{ forloop.counter0 }} .station-content > div {
+            overflow-y: {{ station.mobile_overflow_behavior }} !important;
+            overflow-x: hidden !important;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            max-height: 100%;
+            width: 100%;
+        }
+
+        /* Hide scrollbar for inner content */
+        #station-{{ forloop.counter0 }} .station-content > div::-webkit-scrollbar {
+            display: none;
+        }
+        #station-{{ forloop.counter0 }} .station-content > div {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    }
+</style>
+<section class="station absolute inset-0 flex items-center justify-center p-4 md:p-12 pointer-events-none" id="station-{{ forloop.counter0 }}" data-x="{{ station.x_position }}" data-y="{{ station.y_position }}">
+    <div class="station-glow absolute inset-0 rounded-[24px] pointer-events-none"></div>
+    <div class="station-content pointer-events-auto flex flex-col relative overflow-hidden"
+         style="
+            background: {{ station.bg_color }}cc !important;
+            border-color: {{ station.border_color }}44 !important;
+            color: {{ station.text_color }} !important;
+            width: {{ station.width }};
+            max-width: {{ station.max_width }};
+            height: {{ station.height }};
+            max-height: {{ station.max_height }};
+            padding: {{ station.padding }};
+            backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;
+            -webkit-backdrop-filter: blur({{ station.blur_backdrop }}) saturate(180%) !important;
+            {% if station.custom_css %}{{ station.custom_css|safe }}{% endif %}
+         "
+
+         data-animation="{{ station.animation_style }}" data-freeze="{{ station.freeze_on_hover|yesno:'true,false' }}">
+
+        <div style="position:relative;z-index:1;margin:auto 0;">
+            {% if station.eyebrow %}
+            <span class="eyebrow">{{ station.eyebrow }}</span>
+            {% endif %}
+
+            {% if station.title %}
+            <h2 class="title-xl font-serif text-gradient-gold mb-5" style="font-style:italic;">{{ station.title }}</h2>
+            {% endif %}
+
+            {{ station.content|render_template_string:request|safe }}
+        </div>
+    </div>
+</section>
+{% endfor %}
+</div>
+<script src="{% static 'js/journal1.js' %}"></script></body></html>
