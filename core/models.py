@@ -1,6 +1,9 @@
 from django.db import models
 
 class SiteSettings(models.Model):
+    # Site Identity
+    site_name = models.CharField(max_length=100, default="Shiva Services")
+
     # Contact Info
     email = models.EmailField(default='contact@shivaservices.co.in')
     phone = models.CharField(max_length=20, default='+91 8000 951 195')
