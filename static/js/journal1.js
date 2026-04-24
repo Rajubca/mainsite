@@ -1,338 +1,305 @@
 function initJournal() {
-        const world = document.getElementById('canvas-world');
-        const dots = [
-            document.getElementById('map-dot-0'),
-            document.getElementById('map-dot-1'),
-            document.getElementById('map-dot-2'),
-            document.getElementById('map-dot-3'),
-            document.getElementById('map-dot-4'),
-            document.getElementById('map-dot-5'),
-            document.getElementById('map-dot-6'),
-            document.getElementById('map-dot-7'),
-            document.getElementById('map-dot-8')
-        ];
+    const dots = document.querySelectorAll('.map-dot');
+    const stations = document.querySelectorAll('.station');
+    const points = [];
 
-        const stations = [
-            document.getElementById('station-1'),
-            document.getElementById('station-2'),
-            document.getElementById('station-3'),
-            document.getElementById('station-4'),
-            document.getElementById('station-5'),
-            document.getElementById('station-6'),
-            document.getElementById('station-7'),
-            document.getElementById('station-8'),
-            document.getElementById('station-9')
-        ];
+    // Parse coordinates and position the dots physically on the map
+    stations.forEach((station, index) => {
+        const x = parseInt(station.getAttribute('data-x'));
+        const y = parseInt(station.getAttribute('data-y'));
+        points.push({ x: x, y: y });
 
-        // Define the 9 coordinates (x, y) as percentages of viewport
-        // We negate the values because moving the *camera* right means moving the *world* left
-        // Our world is 400vw x 400vh
-        const points = [
-            { x: 0, y: -300 },      // Station 1: Start at bottom-left (top: 300vh, view is -300vh)
-            { x: 0, y: -150 },      // Station 2: Mid-up left (top: 150vh, view is -150vh)
-            { x: 0, y: 0 },         // Station 3: Top-left (top: 0vh)
-            { x: -100, y: -150 },   // Station 4: Mid-diagonal down
-            { x: -200, y: -300 },   // Station 5: Center-bottom
-            { x: -300, y: -150 },   // Station 6: Mid-diagonal up
-            { x: -400, y: 0 },      // Station 7: Top-right
-            { x: -400, y: -150 },   // Station 8: Mid-down right
-            { x: -400, y: -300 }    // Station 9: Bottom-right
-        ];
+        // Ensure station physical position matches coordinates on the canvas
+        // x and y are the camera offset, meaning the station needs to be placed positively on the canvas
+        station.style.left = `${Math.abs(x)}vw`;
+        station.style.top = `${Math.abs(y)}vh`;
+    });
 
-        // Smooth scrolling variables
-        let currentScroll = window.scrollY;
-        let targetScroll = window.scrollY;
+    // State
+    let currentStationIndex = 0;
 
-        function updateScroll() {
-            // Use the smoothly interpolated scroll value
-            const scrollTop = currentScroll;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    // Dynamically position minimap dots using points array limits
+    // Wait, the SVG has a hardcoded M shape path!
+    // If they change coordinates, the M path SVG stays the same,
+    // so the dots will fly off the line unless they match perfectly!
+    // I'll keep the dot positioning dynamic to the coordinates relative to the 400vw/300vh box:
+    const maxX = Math.max(1, ...points.map(p => Math.abs(p.x)));
+    const maxY = Math.max(1, ...points.map(p => Math.abs(p.y)));
 
-            if (maxScroll <= 0) return;
+    dots.forEach((dot, index) => {
+        if (index < points.length) {
+            const pt = points[index];
+            const leftPercent = 10 + (Math.abs(pt.x) / maxX) * 80;
+            const topPercent = 10 + (Math.abs(pt.y) / maxY) * 80;
+            dot.style.left = `${leftPercent}%`;
+            dot.style.top = `${topPercent}%`;
+            dot.style.bottom = 'auto';
+        }
+    });
 
-            // Progress from 0.0 to 1.0
-            const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
 
-            // We have 8 "segments" between our 9 points
-            const totalSegments = points.length - 1;
+    dots.forEach((dot, index) => {
+        const pt = points[index];
+        // points x is 0 to -400vw, map to 10% to 90%
+        // points y is 0 to -300vh, map to 10% to 90%
+        // 0vw -> 10%, -400vw -> 90%
+        const leftPercent = 10 + (Math.abs(pt.x) / 400) * 80;
 
-            // Which segment are we currently in?
-            const currentSegment = Math.min(Math.floor(progress * totalSegments), totalSegments - 1);
+        // Y mapping: 0vh -> top: 10%, -300vh -> top: 90% (which means bottom: 10%)
+        // Because the original dots used bottom/top CSS properties
+        const topPercent = 10 + (Math.abs(pt.y) / 300) * 80;
 
-            // How far along are we within this specific segment? (0.0 to 1.0)
-            const segmentProgress = (progress * totalSegments) - currentSegment;
+        dot.style.left = `${leftPercent}%`;
+        dot.style.top = `${topPercent}%`;
+        dot.style.bottom = 'auto'; // override any hardcoded css
+    });
 
-            // Interpolate X and Y
-            const startPoint = points[currentSegment];
-            const endPoint = points[currentSegment + 1];
+    let currentProgress = 0.0;   // The float representing our lerped position (0.0 - 8.0)
 
-            // Easing function (smoothstep) for softer transitions between stations
-            const ease = t => t * t * (3 - 2 * t);
-            const easedProgress = ease(segmentProgress);
+    // Elements
+    const btnNext = document.getElementById('nav-next');
+    const btnPrev = document.getElementById('nav-prev');
 
-            const currentX = startPoint.x + (endPoint.x - startPoint.x) * easedProgress;
-            const currentY = startPoint.y + (endPoint.y - startPoint.y) * easedProgress;
-
-            // Apply transform to move the entire world canvas
-            world.style.transform = `translate3d(${currentX}vw, ${currentY}vh, 0)`;
-
-            // Update FAB visibility
-            updateScrollToTopVisibility(progress);
-
-            // Update navigation map dots and station content opacity/scale
-            const absoluteProgress = progress * totalSegments;
-
-            dots.forEach((dot, index) => {
-                const distance = Math.abs(absoluteProgress - index);
-
-                // Map Dot logic
-                if (distance < 0.5) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-
-                // Station Content logic (Opacity & Scale)
-                const stationContent = stations[index].querySelector('.station-content');
-                if (stationContent) {
-                    if (distance < 0.8) {
-                        stations[index].classList.add('active');
-                        // In view / active
-                        // User requested to remove opacity transition for active section (keep it solid 1)
-                        stationContent.style.opacity = '1';
-                        stationContent.style.pointerEvents = 'auto';
-
-                        // Custom smooth transforms per station ensuring spatial isolation
-                        // By scaling down significantly when inactive, we prevent overlapping blocks visually.
-                        let transformStr = '';
-                        // distance goes from 0 (perfectly centered) to >1.0 (far away)
-
-                        switch(index) {
-                            case 0: // Gateway: Zoom in from slightly smaller
-                                const scale0 = Math.max(0.85, 1 - (distance * 0.15));
-                                transformStr = `scale(${scale0})`;
-                                break;
-                            case 1: // Vision: Slide from left
-                                const transX1 = distance * -150;
-                                const scale1 = Math.max(0.9, 1 - (distance * 0.1));
-                                transformStr = `translateX(${transX1}px) scale(${scale1})`;
-                                break;
-                            case 2: // Construction: Slide from right
-                                const transX2 = distance * 150;
-                                const scale2 = Math.max(0.9, 1 - (distance * 0.1));
-                                transformStr = `translateX(${transX2}px) scale(${scale2})`;
-                                break;
-                            case 3: // AI Market: Gentle 3D Tilt backward
-                                const rotX3 = distance * 15;
-                                const scale3 = Math.max(0.9, 1 - (distance * 0.1));
-                                transformStr = `perspective(1000px) rotateX(${rotX3}deg) scale(${scale3})`;
-                                break;
-                            case 4: // Digital Eng: Intense scale up
-                                const scale4 = Math.max(0.7, 1 - (distance * 0.3));
-                                transformStr = `scale(${scale4})`;
-                                break;
-                            case 5: // Web Studio: Slide up from bottom
-                                const transY5 = distance * 200;
-                                const scale5 = Math.max(0.9, 1 - (distance * 0.1));
-                                transformStr = `translateY(${transY5}px) scale(${scale5})`;
-                                break;
-                            case 6: // Wellness: Blur and subtle scale
-                                const scale6 = Math.max(0.95, 1 - (distance * 0.05));
-                                transformStr = `scale(${scale6})`;
-                                stationContent.style.filter = `blur(${distance * 10}px)`;
-                                break;
-                            case 7: // Future: Slide down from top
-                                const transY7 = distance * -200;
-                                const scale7 = Math.max(0.9, 1 - (distance * 0.1));
-                                transformStr = `translateY(${transY7}px) scale(${scale7})`;
-                                break;
-                            case 8: // Journey: Sink into background
-                                const scale8 = Math.max(0.8, 1 - (distance * 0.2));
-                                transformStr = `scale(${scale8})`;
-                                break;
-                        }
-                        stationContent.style.transform = transformStr;
-                        if(index !== 6) stationContent.style.filter = 'none';
-
-                    } else {
-                        stations[index].classList.remove('active');
-                        // Far away: Move completely out of view or scale down tiny to prevent overlapping bounds
-                        stationContent.style.opacity = '0'; // Fully invisible to prevent overlap
-                        stationContent.style.pointerEvents = 'none';
-                        stationContent.style.transform = 'scale(0.5)'; // Tiny footprint
-                        if(index === 6) stationContent.style.filter = 'blur(10px)';
-                    }
-                }
-            });
+    function updateButtonStates() {
+        if (currentStationIndex === 0) {
+            btnPrev.classList.add('opacity-50', 'cursor-not-allowed');
+            btnPrev.classList.remove('hover:scale-110');
+        } else {
+            btnPrev.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnPrev.classList.add('hover:scale-110');
         }
 
-        // Scroll-To-Top button logic (Custom slow scroll)
-        const scrollToTopBtn = document.getElementById('scroll-to-top');
-        scrollToTopBtn.addEventListener('click', () => {
-            const startY = window.scrollY;
-            const duration = 3000; // 1.5 seconds scroll duration
-            let startTime = null;
+        if (currentStationIndex === stations.length - 1) {
+            btnNext.classList.add('opacity-50', 'cursor-not-allowed');
+            btnNext.classList.remove('hover:scale-110');
+        } else {
+            btnNext.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnNext.classList.add('hover:scale-110');
+        }
+    }
 
-            function animation(currentTime) {
-                if (startTime === null) startTime = currentTime;
-                const timeElapsed = currentTime - startTime;
-
-                // easeInOutQuad easing function
-                let t = timeElapsed / duration;
-                t = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-                const distance = -startY * t;
-                window.scrollTo(0, startY + distance);
-
-                if (timeElapsed < duration) {
-                    requestAnimationFrame(animation);
-                } else {
-                    window.scrollTo(0, 0); // Ensure it reaches exact top
-                }
+    // Navigation Buttons
+    if (btnNext) {
+        btnNext.addEventListener('click', () => {
+            if (currentStationIndex < stations.length - 1) {
+                currentStationIndex++;
+                updateButtonStates();
             }
-            requestAnimationFrame(animation);
         });
+    }
 
-        function updateScrollToTopVisibility(progress) {
-            if (progress > 0.1) {
-                // Show button when scrolled past 10%
-                scrollToTopBtn.style.opacity = '1';
-                scrollToTopBtn.style.pointerEvents = 'auto';
-                scrollToTopBtn.style.transform = 'translateY(0)';
-            } else {
-                // Hide button at the top
-                scrollToTopBtn.style.opacity = '0';
-                scrollToTopBtn.style.pointerEvents = 'none';
-                scrollToTopBtn.style.transform = 'translateY(1rem)';
+    if (btnPrev) {
+        btnPrev.addEventListener('click', () => {
+            if (currentStationIndex > 0) {
+                currentStationIndex--;
+                updateButtonStates();
             }
-        }
+        });
+    }
 
-        // Initialize display
-        updateScroll();
+    // Setup map dots to jump directly to section
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentStationIndex = index;
+            updateButtonStates();
+        });
+    });
 
-        // --- Draggable Navigation Logic ---
-        const navOverlay = document.getElementById('nav-overlay');
-        let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        let xOffset = 0;
-        let yOffset = 0;
+    // --- Draggable Navigation Logic (for the mini-map) ---
+    const navOverlay = document.getElementById('nav-overlay');
+    let isDragging = false;
+    let currentX, currentY, initialX, initialY;
+    let xOffset = 0, yOffset = 0;
 
+    if (navOverlay) {
         navOverlay.addEventListener('mousedown', dragStart);
         navOverlay.addEventListener('touchstart', dragStart, {passive: false});
 
-        // Attach mousemove/up to the window so dragging doesn't break if cursor leaves the box rapidly
         window.addEventListener('mousemove', drag);
         window.addEventListener('touchmove', drag, {passive: false});
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
+    }
 
-        function dragStart(e) {
-            // Don't drag if clicking on a button, link, or dot
-            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.map-dot')) {
-                return;
-            }
+    function dragStart(e) {
+        if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.map-dot')) {
+            return;
+        }
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
+        if (e.target.closest('#nav-overlay')) {
+            isDragging = true;
+            if(e.type !== "touchstart") e.preventDefault();
+        }
+    }
 
-            if (e.type === "touchstart") {
-                initialX = e.touches[0].clientX - xOffset;
-                initialY = e.touches[0].clientY - yOffset;
+    function drag(e) {
+        if (isDragging) {
+            if (e.type === "touchmove") {
+                e.preventDefault();
+                currentX = e.touches[0].clientX - initialX;
+                currentY = e.touches[0].clientY - initialY;
             } else {
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
             }
 
-            if (e.target.closest('#nav-overlay')) {
-                isDragging = true;
-                // Prevent text selection while dragging
-                if(e.type !== "touchstart") e.preventDefault();
-            }
+            // Constrain dragging to the viewport so the menu never glitches off screen!
+            const rect = navOverlay.getBoundingClientRect();
+
+            // The nav is initially positioned with translate-x -50%, so the origin (0,0) is actually in the middle of the screen horizontally.
+            const maxRight = (window.innerWidth / 2) - (rect.width / 2);
+            const maxLeft = -(window.innerWidth / 2) + (rect.width / 2);
+
+            // Y is initially near the top
+            const maxTop = -20; // Allow a little bit of upward movement
+            const maxBottom = window.innerHeight - rect.height - 100;
+
+            currentX = Math.max(maxLeft, Math.min(currentX, maxRight));
+            currentY = Math.max(maxTop, Math.min(currentY, maxBottom));
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            navOverlay.style.transform = `translate3d(calc(-50% + ${currentX}px), ${currentY}px, 0)`;
         }
+    }
 
-        function drag(e) {
-            if (isDragging) {
-                if (e.type === "touchmove") {
-                    e.preventDefault(); // Prevent scrolling while dragging
-                    currentX = e.touches[0].clientX - initialX;
-                    currentY = e.touches[0].clientY - initialY;
-                } else {
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
+    function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+    }
+
+
+
+
+    // Implement hover freeze logic reliably via CSS class toggle
+    stations.forEach(station => {
+        const content = station.querySelector('.station-content');
+        if (content) {
+            content.addEventListener('mouseenter', () => {
+                if (content.getAttribute('data-freeze') === 'True' || content.getAttribute('data-freeze') === 'true') {
+                    content.classList.add('is-frozen');
                 }
-
-                xOffset = currentX;
-                yOffset = currentY;
-
-                setTranslate(currentX, currentY, navOverlay);
-            }
-        }
-
-        function dragEnd(e) {
-            initialX = currentX;
-            initialY = currentY;
-            isDragging = false;
-        }
-
-        function setTranslate(xPos, yPos, el) {
-            el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
-        }
-
-        // Update the target scroll position when the user native-scrolls
-        window.addEventListener('scroll', () => {
-            targetScroll = window.scrollY;
-        });
-
-        // The continuous rendering loop for buttery smooth interpolation (Lerp)
-        function renderLoop() {
-            // Linear Interpolation: move current 8% closer to target every frame
-            // This creates a very smooth "gliding" effect between stations
-            currentScroll += (targetScroll - currentScroll) * 0.015;
-
-            // Only update the DOM if the values are noticeably different
-            if (Math.abs(targetScroll - currentScroll) > 0.5) {
-                updateScroll();
-            }
-
-            requestAnimationFrame(renderLoop);
-        }
-
-        // Start the continuous loop
-        requestAnimationFrame(renderLoop);
-
-        // Setup map dots to be clickable
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                const targetScroll = (index / (points.length - 1)) * maxScroll;
-
-                const startY = window.scrollY;
-                const distance = targetScroll - startY;
-                const duration = 3000; // 2 seconds
-                let startTime = null;
-
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-
-                    // easeInOutQuart for a smoother, slightly more dramatic effect
-                    let t = timeElapsed / duration;
-                    let easedT = t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
-
-                    window.scrollTo(0, startY + distance * easedT);
-
-                    if (timeElapsed < duration) {
-                        requestAnimationFrame(animation);
-                    } else {
-                        window.scrollTo(0, targetScroll); // Ensure exact final position
-                    }
-                }
-
-                requestAnimationFrame(animation);
             });
+            content.addEventListener('mouseleave', () => {
+                content.classList.remove('is-frozen');
+            });
+        }
+    });
 
-            // We removed mapLabel, hover is handled purely by CSS pseudo-elements
+    function renderLoop() {
+
+
+
+        // Smooth lerping factor (butter smooth animation towards the target index)
+        const speed = window.SHIVA_CONFIG?.cameraSpeed || 0.05;
+        currentProgress += (currentStationIndex - currentProgress) * speed;
+
+        // Calculate Camera Panning
+        const totalSegments = points.length - 1;
+        const currentSegment = Math.min(Math.floor(currentProgress), totalSegments - 1);
+        const segmentProgress = currentProgress - currentSegment;
+
+        // Easing function (smoothstep) for softer transitions between stations
+        const ease = t => t * t * (3 - 2 * t);
+        const easedProgress = ease(segmentProgress);
+
+        const startPoint = points[currentSegment];
+        const endPoint = points[currentSegment + 1];
+
+        const currentCamX = startPoint.x + (endPoint.x - startPoint.x) * easedProgress;
+        const currentCamY = startPoint.y + (endPoint.y - startPoint.y) * easedProgress;
+
+        const world = document.getElementById('canvas-world');
+        if (world) {
+            world.style.transform = `translate3d(${currentCamX}vw, ${currentCamY}vh, 0)`;
+        }
+
+        // Apply Blurs, Opacity and Active states
+        dots.forEach((dot, index) => {
+            const distance = Math.abs(currentProgress - index);
+
+            // Map Dot logic
+            if (distance < 0.5) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+
+            // Station Content logic
+            const stationContent = stations[index].querySelector('.station-content');
+            if (stationContent) {
+                if (distance < 1.0) {
+                    stations[index].classList.add('active');
+                    stations[index].classList.add('is-visible');
+
+                    const opacity = Math.max(0, 1 - (distance * 1.5));
+                    stationContent.style.opacity = opacity.toString();
+
+                    if (distance < 0.2) {
+                        stationContent.style.pointerEvents = 'auto';
+                    } else {
+                        stationContent.style.pointerEvents = 'none';
+                    }
+
+                    const blurAmount = distance * 20;
+                    stationContent.style.filter = `blur(${blurAmount}px)`;
+
+                } else {
+                    stations[index].classList.remove('active');
+                    stations[index].classList.remove('is-visible');
+                    stationContent.style.opacity = '0';
+                    stationContent.style.pointerEvents = 'none';
+                    stationContent.style.filter = 'blur(20px)';
+                }
+            }
         });
+
+        requestAnimationFrame(renderLoop);
+    }
+
+    // Init
+    updateButtonStates();
+    requestAnimationFrame(renderLoop);
+}
+
+
+// Setup Preloader logic
+const loader = document.getElementById('shiva-loader');
+if (loader) {
+    let hasLoaded = false;
+
+    function hideLoader() {
+        if (hasLoaded) return;
+        hasLoaded = true;
+        loader.classList.add('loaded');
+        setTimeout(() => {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
+            }
+        }, 1000);
+    }
+
+    // Minimum 2-second delay before we even CONSIDER hiding
+    setTimeout(() => {
+        if (document.readyState === 'complete') {
+            hideLoader();
+        } else {
+            // Once 2 seconds pass, if it finishes loading, hide it
+            window.addEventListener('load', hideLoader);
+        }
+    }, 2000);
+
+    // Absolute Failsafe: No matter what, hide the loader after 5 seconds
+    // so the user is never stuck looking at the logo forever if an image hangs
+    setTimeout(hideLoader, 5000);
 }
 
 if (document.readyState === "loading") {
@@ -340,3 +307,73 @@ if (document.readyState === "loading") {
 } else {
     initJournal();
 }
+
+// Handle Form Submission
+window.handleSubmit = function(btn) {
+    const name = document.getElementById('c-name').value;
+    const email = document.getElementById('c-email').value;
+    const msg = document.getElementById('c-msg').value;
+    const status = document.getElementById('form-status');
+
+    if (!name || !email || !msg) {
+        status.style.display = 'block';
+        status.style.color = '#ef4444'; // Tailwind red-500
+        status.innerText = 'Please complete all fields.';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'Transmitting...';
+    status.style.display = 'none';
+
+    // Get CSRF token from cookies
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+
+    const csrftoken = getCookie('csrftoken');
+
+    fetch('/api/contact/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({ name: name, email: email, message: msg })
+    })
+    .then(response => response.json())
+    .then(data => {
+        status.style.display = 'block';
+        if (data.success) {
+            status.style.color = '#10b981'; // Tailwind green-500
+            status.innerText = data.success;
+            // Clear form
+            document.getElementById('c-name').value = '';
+            document.getElementById('c-email').value = '';
+            document.getElementById('c-msg').value = '';
+        } else {
+            status.style.color = '#ef4444';
+            status.innerText = data.error || 'Transmission failed.';
+        }
+    })
+    .catch(error => {
+        status.style.display = 'block';
+        status.style.color = '#ef4444';
+        status.innerText = 'Connection error. Please try again.';
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerText = 'Initiate Transmission';
+    });
+};

@@ -130,6 +130,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # CKEditor configuration
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'allowedContent': True,     # Prevent CKEditor from stripping classes, styles, and tags!
+        'extraAllowedContent': '*(*);*{*};*[*]', # Ensure nothing gets filtered
+        'fillEmptyBlocks': False,
+        'removePlugins': 'elementspath',
+    },
+}
+
 
 # Settings for collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
