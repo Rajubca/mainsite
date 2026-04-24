@@ -13,6 +13,25 @@
                 Discover the latest stories, insights, and updates from our team.
             </p>
 
+
+            <!-- Search Form -->
+            <div class="max-w-xl mx-auto mt-8 mb-4">
+                <form action="{% url 'blog:post_list' %}" method="GET" class="relative" id="search-form">
+                    {% if active_category %}
+                    <input type="hidden" name="category" value="{{ active_category.slug }}">
+                    {% endif %}
+                    {% if active_tag %}
+                    <input type="hidden" name="tag" value="{{ active_tag.slug }}">
+                    {% endif %}
+                    <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Search articles..." class="w-full px-5 py-3 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors duration-300 shadow-sm">
+                    <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-500">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
             <!-- Category Filter -->
             <div class="flex flex-wrap justify-center gap-2 mt-6">
                 <a href="{% url 'blog:post_list' %}" class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors {% if not active_category %}bg-indigo-600 text-white shadow-md{% else %}bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors duration-300{% endif %}" data-category="">
@@ -24,6 +43,16 @@
                 </a>
                 {% endfor %}
             </div>
+
+            {% if active_tag %}
+            <div class="mt-4 flex justify-center items-center space-x-2">
+                <span class="text-gray-500 dark:text-gray-400 text-sm">Showing posts tagged:</span>
+                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                    #{{ active_tag.name }}
+                    <a href="{% url 'blog:post_list' %}" class="ml-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200">&times;</a>
+                </span>
+            </div>
+            {% endif %}
         </div>
 
         <div id="post-grid-container" class="grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
@@ -52,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 1;
     let hasNextPage = {{ has_next|yesno:"true,false" }};
     let currentCategory = "{{ active_category.slug|default:'' }}";
+    let searchQuery = "{{ search_query|default:'' }}";
     let isLoading = false;
 
     // Filter functionality
@@ -124,6 +154,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let url = `?page=${currentPage}`;
         if (currentCategory) {
             url += `&category=${currentCategory}`;
+        }
+        if (searchQuery) {
+            url += `&q=${encodeURIComponent(searchQuery)}`;
         }
 
         fetch(url, {

@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "blog",
     "ckeditor",
     "ckeditor_uploader",
+    "taggit",
+    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
