@@ -36,17 +36,17 @@
         <!-- Global Footer -->
         <footer class="bg-white dark:bg-gray-800 shadow-inner mt-12 transition-colors duration-300">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <!-- Brand & Address -->
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-300 tracking-wider uppercase">Contact Us</h3>
+                    <div class="col-span-1 md:col-span-1">
+                        <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-300 tracking-wider uppercase">{{ site_settings.site_name|default:"SS's Blogs" }}</h3>
                         <p class="mt-4 text-base text-gray-500 dark:text-gray-400">
                             {{ site_settings.address|linebreaksbr }}
                         </p>
                     </div>
 
                     <!-- Direct Contact -->
-                    <div>
+                    <div class="col-span-1 md:col-span-1">
                         <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-300 tracking-wider uppercase">Direct Line</h3>
                         <ul class="mt-4 space-y-4">
                             <li>
@@ -62,7 +62,26 @@
                         </ul>
                     </div>
 
+                    <!-- Related Blogs (Added via Context Processor or Tag later) -->
+                    <div class="col-span-1 md:col-span-1">
+                        <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-300 tracking-wider uppercase">Recent Blogs</h3>
+                        <ul class="mt-4 space-y-4" id="footer-recent-blogs">
+                            {% load blog_tags %}
+                            {% get_recent_posts 3 as recent_posts %}
+                            {% for r_post in recent_posts %}
+                            <li>
+                                <a href="{% url 'blog:post_detail' r_post.slug %}" class="text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors line-clamp-2">
+                                    {{ r_post.title }}
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li><span class="text-gray-400 text-sm">No recent posts.</span></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
                     <!-- Social -->
+
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-300 tracking-wider uppercase">Follow Us</h3>
                         <div class="mt-4 flex space-x-6">
@@ -107,7 +126,7 @@
 
                 <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8 flex items-center justify-between">
                     <p class="text-base text-gray-400 dark:text-gray-500">
-                        &copy; {% now "Y" %} Shiva Services. All rights reserved.
+                        &copy; {% now "Y" %} {{ site_settings.site_name|default:"SS's Blogs" }}. All rights reserved.
                     </p>
                 </div>
             </div>

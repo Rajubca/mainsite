@@ -2,7 +2,7 @@ from django.db import models
 
 class SiteSettings(models.Model):
     # Site Identity
-    site_name = models.CharField(max_length=100, default="Shiva Services")
+    site_name = models.CharField(max_length=100, default="SS's Blogs")
 
     # Contact Info
     email = models.EmailField(default='contact@shivaservices.co.in')

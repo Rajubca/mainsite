@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitesettings",
             name="site_name",
-            field=models.CharField(default="Shiva Services", max_length=100),
+            field=models.CharField(default="SS's Blogs", max_length=100),
         ),
     ]
