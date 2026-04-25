@@ -36,8 +36,11 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    "django.contrib.sitemaps",
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "seo",
     "core",
     "blog",
     "ckeditor",
@@ -145,3 +148,4 @@ CKEDITOR_CONFIGS = {
 
 # Settings for collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+SITE_ID = 1

@@ -18,7 +18,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Post(models.Model):
+from seo.models import SEOModel
+
+
+class Post(SEOModel):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
     content = RichTextUploadingField()

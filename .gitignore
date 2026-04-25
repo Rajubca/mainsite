@@ -1,3 +1,6 @@
 venv/
 staticfiles/
 node_modules/
+server.log
+__pycache__/
+*.pyc

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Site{% endblock %}</title>
+    {% load seo_tags %}
+    {% block seo %}{% render_seo_tags %}{% endblock %}
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link href="{% static 'css/journal1.css' %}" rel="stylesheet">
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
