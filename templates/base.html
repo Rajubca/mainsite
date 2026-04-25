@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load seo_tags %}
-    {% block seo %}{% render_seo_tags %}{% endblock %}
+    <title>{% block title %}My Site{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link href="{% static 'css/journal1.css' %}" rel="stylesheet">
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
@@ -38,6 +37,7 @@
         <!-- Global Footer -->
         <footer class="bg-white dark:bg-gray-800 shadow-inner mt-12 transition-colors duration-300">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                {% block footer_contact %}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Brand & Address -->
                     <div>
@@ -107,6 +107,7 @@
                     </div>
                 </div>
 
+                                {% endblock %}
                 <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8 flex items-center justify-between">
                     <p class="text-base text-gray-400 dark:text-gray-500">
                         &copy; {% now "Y" %} Shiva Services. All rights reserved.

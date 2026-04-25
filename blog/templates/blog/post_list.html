@@ -5,7 +5,7 @@
 {% block content %}
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-16">
+        <div class="text-center mb-16">
             <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
                 Our Journal
             </h1>
@@ -26,8 +26,13 @@
             </div>
         </div>
 
-                <div id="post-grid-container" class="grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+        <div id="post-grid-container" class="grid gap-10 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             {% include 'blog/post_list_partial.html' %}
+        </div>
+
+        <!-- Pagination Controls Container -->
+        <div id="pagination-container">
+            {% include 'blog/pagination_partial.html' %}
         </div>
     </div>
 </div>
@@ -36,7 +41,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const filterLinks = document.querySelectorAll('.category-filter');
     const gridContainer = document.getElementById('post-grid-container');
+    const paginationContainer = document.getElementById('pagination-container');
 
+    // Handle Category Filter Clicks
     filterLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -50,29 +57,90 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set clicked button to active state
             this.className = 'category-filter px-4 py-2 rounded-full text-sm font-medium transition-colors bg-indigo-600 text-white shadow-md transition-colors duration-300';
 
-            // Show a quick loading state or opacity fade
-            gridContainer.style.opacity = '0.5';
-
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.text();
-            })
-            .then(html => {
-                gridContainer.innerHTML = html;
-                gridContainer.style.opacity = '1';
-                window.history.pushState({path: url}, '', url);
-            })
-            .catch(error => {
-                console.error('Error fetching posts:', error);
-                gridContainer.style.opacity = '1';
-            });
+            fetchGrid(url);
         });
     });
+
+    // Handle Pagination Clicks (Event Delegation)
+    paginationContainer.addEventListener('click', function(e) {
+        if(e.target.tagName === 'A' || e.target.closest('a')) {
+            e.preventDefault();
+            const link = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+            const url = link.getAttribute('href');
+            if (url && url !== '#') {
+                fetchGrid(url);
+            }
+        }
+    });
+
+    function fetchGrid(url) {
+        gridContainer.style.opacity = '0.5';
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(html => {
+            // Because the partial only returns the grid items,
+            // we'll need to parse out the pagination from the full page response.
+            // A better way is to update the views.py to return both in a JSON payload,
+            // OR we can fetch the full HTML document and extract what we need.
+
+            // Let's adjust to fetch the full page without AJAX to keep it simple and robust,
+            // or we extract the grid and pagination elements from the fetched HTML text.
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            // If the view returns just the partial (because of AJAX header):
+            // Then we don't get the new pagination partial in the response.
+            // Let's change the fetch strategy: Remove the 'X-Requested-With' header
+            // so we get the full page, then extract just the grid and pagination.
+        });
+    }
+
+    // Rewrite fetchGrid to just fetch the whole page and replace parts
+    function fetchGridRobust(url) {
+        gridContainer.style.opacity = '0.5';
+        paginationContainer.style.opacity = '0.5';
+
+        fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            const newGrid = doc.getElementById('post-grid-container');
+            const newPagination = doc.getElementById('pagination-container');
+
+            if (newGrid) gridContainer.innerHTML = newGrid.innerHTML;
+            if (newPagination) paginationContainer.innerHTML = newPagination.innerHTML;
+
+            gridContainer.style.opacity = '1';
+            paginationContainer.style.opacity = '1';
+            window.history.pushState({path: url}, '', url);
+
+            // Scroll smoothly to top of grid
+            gridContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        })
+        .catch(error => {
+            console.error('Error fetching posts:', error);
+            gridContainer.style.opacity = '1';
+            paginationContainer.style.opacity = '1';
+        });
+    }
+
+    // Override the earlier fetchGrid with the robust one
+    function fetchGrid(url) {
+        fetchGridRobust(url);
+    }
 
     window.addEventListener('popstate', function() {
         window.location.reload();
@@ -80,3 +148,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
+
+{% block footer_contact %}{% endblock %}

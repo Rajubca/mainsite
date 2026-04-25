@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, Category
 
 def post_list(request):
@@ -7,11 +8,21 @@ def post_list(request):
 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
-        posts = Post.objects.filter(category=category)
+        post_list = Post.objects.filter(category=category)
         active_category = category
     else:
-        posts = Post.objects.all()
+        post_list = Post.objects.all()
         active_category = None
+
+    paginator = Paginator(post_list, 9) # Show 9 posts per page
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
 
     context = {
         'posts': posts,

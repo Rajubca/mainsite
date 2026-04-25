@@ -49,10 +49,7 @@ class SiteSettings(models.Model):
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from seo.models import SEOModel
-
-
-class Station(SEOModel):
+class Station(models.Model):
     ANIMATION_CHOICES = [
         ('dangle', 'Hanging on Rope (Swing)'),
         ('float', 'Floating Gently (Up/Down)'),
