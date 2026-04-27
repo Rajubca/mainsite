@@ -1047,3 +1047,25 @@ body {
 .is-frozen {
     animation-play-state: paused !important;
 }
+
+/* Override tooltip positioning for right-side dots so they appear on the left */
+#map-dot-5::after,
+#map-dot-6::after,
+#map-dot-7::after,
+#map-dot-8::after {
+  left: auto;
+  right: 20px;
+  transform: translateY(-50%) translateX(5px);
+}
+
+#map-dot-5.active::after,
+#map-dot-5:hover::after,
+#map-dot-6.active::after,
+#map-dot-6:hover::after,
+#map-dot-7.active::after,
+#map-dot-7:hover::after,
+#map-dot-8.active::after,
+#map-dot-8:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
