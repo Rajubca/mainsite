@@ -385,6 +385,7 @@ body {
 .map-dot::after {
   content: attr(data-label);
   position: absolute;
+  z-index: 99999;
   top: 50%;
   left: 20px;
   transform: translateY(-50%) translateX(-5px);
