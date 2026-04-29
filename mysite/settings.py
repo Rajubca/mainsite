@@ -132,11 +132,21 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Format', 'Font', 'FontSize'],
+            ['Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Youtube', 'Flash', 'Table', 'HorizontalRule'],
+            ['TextColor', 'BGColor'],
+            ['Smiley', 'SpecialChar'],
+            ['Source'],
+        ],
+        'extraPlugins': 'youtube',
         'height': 300,
         'width': '100%',
-        'allowedContent': True,     # Prevent CKEditor from stripping classes, styles, and tags!
-        'extraAllowedContent': '*(*);*{*};*[*]', # Ensure nothing gets filtered
+        'allowedContent': True,
+        'extraAllowedContent': '*(*);*{*};*[*]',
         'fillEmptyBlocks': False,
         'removePlugins': 'elementspath',
     },

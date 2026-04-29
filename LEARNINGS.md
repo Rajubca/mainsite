@@ -15,3 +15,6 @@
 * Testing prolonged CSS transitions (e.g. 1.2s to 1.5s) using custom cubic-bezier properties like `cubic-bezier(0.34, 1.56, 0.64, 1)` creates an "elastic" or "spring" effect which significantly enhances the perceived fluidity of navigation dots and tooltips during scroll interactions.
 * Testing prolonged CSS transitions (e.g. 1.2s to 1.5s) using custom cubic-bezier properties like `cubic-bezier(0.34, 1.56, 0.64, 1)` creates an "elastic" or "spring" effect which significantly enhances the perceived fluidity of navigation dots and tooltips during scroll interactions.
 * Testing prolonged CSS transitions (e.g. 1.2s to 1.5s) using custom cubic-bezier properties like `cubic-bezier(0.34, 1.56, 0.64, 1)` creates an "elastic" or "spring" effect which significantly enhances the perceived fluidity of navigation dots and tooltips during scroll interactions.
+
+* Django Error pages (404, 500, etc) can be cleanly overridden by creating corresponding HTML files inside templates and linking them in the main urlconf using `handler404`, `handler500`, etc.
+* To extend CKEditor functionalities such as adding external Youtube video embeds in Django, download the necessary CKEditor plugins to your static directory and configure `CKEDITOR_CONFIGS` in your settings to include `extraPlugins: 'youtube'` and add it to the toolbar.

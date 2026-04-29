@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Access Denied - 403{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
+    <div class="relative z-10">
+        <div class="flex items-center justify-center space-x-2">
+            <svg class="w-24 h-24 text-orange-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            <h1 class="text-9xl font-bold text-gray-800 dark:text-gray-100 tracking-widest relative" style="text-shadow: 0 0 15px rgba(249, 115, 22, 0.5);">
+                403
+            </h1>
+        </div>
+    </div>
+
+    <div class="mt-8 z-10">
+        <h2 class="text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-4 animate-fade-in-up">Access Forbidden</h2>
+        <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+            You don't have permission to access this realm. Let's find a path you're allowed to take.
+        </p>
+
+        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium text-white transition-all duration-300 ease-in-out transform bg-orange-500 rounded-full hover:bg-orange-600 hover:scale-105 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            Return Home
+        </a>
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+    }
+</style>
+{% endblock %}
