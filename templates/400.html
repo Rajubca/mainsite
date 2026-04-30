@@ -6,101 +6,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bad Request - 400</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background: #171717; /* Dark neutral */
+            background-color: #0f172a;
             font-family: 'Inter', sans-serif;
-            color: #f5f5f5;
+            color: #f8fafc;
         }
 
-        /* Spinning Rings Background */
-        .ring-container {
+        .ambient-glow {
             position: absolute;
             top: 50%;
             left: 50%;
+            width: 80vw;
+            height: 80vw;
             transform: translate(-50%, -50%);
-            width: 100vh;
-            height: 100vh;
-            z-index: -2;
-            opacity: 0.15;
+            background: radial-gradient(circle, rgba(234, 179, 8, 0.03) 0%, rgba(15, 23, 42, 0) 70%);
+            animation: breathe 8s ease-in-out infinite alternate;
+            z-index: -1;
             pointer-events: none;
         }
 
-        .ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border-radius: 50%;
-            border: 2px dashed #eab308; /* Yellow */
-            transform: translate(-50%, -50%);
+        @keyframes breathe {
+            0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.95); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
         }
 
-        .ring-1 { width: 40%; height: 40%; animation: spin 20s linear infinite; }
-        .ring-2 { width: 60%; height: 60%; border-style: dotted; animation: spin-reverse 30s linear infinite; }
-        .ring-3 { width: 80%; height: 80%; border: 1px solid #eab308; animation: spin 40s linear infinite; }
+        .serif-text {
+            font-family: 'Cormorant Garamond', serif;
+        }
 
-        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes spin-reverse { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
-
-        .text-400 {
+        .error-code {
             font-size: 10rem;
-            font-weight: 900;
-            color: #eab308;
-            text-shadow: 0 0 30px rgba(234, 179, 8, 0.4);
-            letter-spacing: -2px;
-            animation: bobble 4s ease-in-out infinite alternate;
+            font-weight: 300;
+            color: #eab308; /* Forest gold */
+            line-height: 1;
+            opacity: 0.7;
+            letter-spacing: -0.05em;
         }
 
-        @keyframes bobble {
-            0% { transform: translateY(0); text-shadow: 0 0 20px rgba(234, 179, 8, 0.3); }
-            100% { transform: translateY(-15px); text-shadow: 0 20px 40px rgba(234, 179, 8, 0.6); }
+        .divider {
+            width: 40px;
+            height: 1px;
+            background-color: #eab308;
+            margin: 2rem auto;
+            opacity: 0.5;
+        }
+
+        .btn-refined {
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: transparent;
+        }
+
+        .btn-refined:hover {
+            border-color: #eab308;
+            color: #eab308;
+            background: rgba(234, 179, 8, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-up {
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .btn-glow:hover {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.8);
-            transform: translateY(-2px);
         }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center relative">
+<body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
-    <!-- Background Effects -->
-    <div class="ring-container">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="ring ring-3"></div>
-    </div>
+    <div class="ambient-glow"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 text-center px-4 max-w-2xl">
-        <h1 class="text-400 mb-2">400</h1>
+    <div class="relative z-10 text-center px-6 max-w-2xl">
+        <h1 class="error-code serif-text fade-in-up" style="animation-delay: 0.1s;">400</h1>
 
-        <h2 class="text-4xl font-bold mb-6 text-yellow-400 fade-up" style="animation-delay: 0.3s;">
+        <div class="divider fade-in-up" style="animation-delay: 0.3s;"></div>
+
+        <h2 class="text-3xl font-light mb-4 serif-text tracking-wide fade-in-up" style="animation-delay: 0.5s;">
             Bad Request
         </h2>
 
-        <p class="text-xl text-neutral-400 mb-10 fade-up" style="animation-delay: 0.6s;">
-            The server couldn't understand your request. Let's start fresh.
+        <p class="text-lg text-slate-400 font-light mb-10 leading-relaxed fade-in-up" style="animation-delay: 0.7s;">
+            The server could not understand the request due to invalid syntax. <br>Please adjust your query and try again.
         </p>
 
-        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-4 text-lg font-bold text-neutral-900 transition-all duration-300 ease-out bg-yellow-500 rounded-full btn-glow fade-up" style="animation-delay: 0.9s;">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Return Home
+        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-3 text-sm tracking-widest uppercase font-medium text-slate-300 rounded-sm btn-refined fade-in-up" style="animation-delay: 0.9s;">
+            Return to Origin
         </a>
     </div>
 

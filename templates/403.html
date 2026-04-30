@@ -4,122 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Denied - 403</title>
+    <title>Access Forbidden - 403</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background: #1c1917; /* Dark stone */
+            background-color: #0f172a;
             font-family: 'Inter', sans-serif;
-            color: #fafaf9;
+            color: #f8fafc;
         }
 
-        /* Warning Stripes Background */
-        .stripes-bg {
+        .ambient-glow {
             position: absolute;
-            inset: -50%;
-            width: 200%;
-            height: 200%;
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(249, 115, 22, 0.03),
-                rgba(249, 115, 22, 0.03) 20px,
-                rgba(0, 0, 0, 0) 20px,
-                rgba(0, 0, 0, 0) 40px
-            );
-            animation: slideStripes 30s linear infinite;
-            z-index: -2;
-        }
-
-        @keyframes slideStripes {
-            0% { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(-100px) translateY(-100px); }
-        }
-
-        /* Scanline effect */
-        .scanline {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, rgba(249, 115, 22, 0.2), transparent);
-            animation: scan 6s linear infinite;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vw;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.03) 0%, rgba(15, 23, 42, 0) 70%);
+            animation: breathe 8s ease-in-out infinite alternate;
             z-index: -1;
             pointer-events: none;
         }
 
-        @keyframes scan {
-            0% { top: -100px; }
-            100% { top: 100vh; }
+        @keyframes breathe {
+            0% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.95); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
         }
 
-        .shield-icon {
-            color: #f97316; /* Orange */
-            filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.6));
-            animation: pulseShield 2s ease-in-out infinite alternate;
+        .serif-text {
+            font-family: 'Cormorant Garamond', serif;
         }
 
-        @keyframes pulseShield {
-            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.4)); }
-            100% { transform: scale(1.1); filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.8)); }
+        .error-code {
+            font-size: 10rem;
+            font-weight: 300;
+            color: #f97316; /* Muted orange */
+            line-height: 1;
+            opacity: 0.7;
+            letter-spacing: -0.05em;
         }
 
-        .text-403 {
-            font-size: 8rem;
-            font-weight: 900;
-            background: linear-gradient(to right, #f97316, #fb923c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -5px;
+        .divider {
+            width: 40px;
+            height: 1px;
+            background-color: #eab308;
+            margin: 2rem auto;
+            opacity: 0.5;
+        }
+
+        .btn-refined {
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: transparent;
+        }
+
+        .btn-refined:hover {
+            border-color: #f97316;
+            color: #f97316;
+            background: rgba(249, 115, 22, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-up {
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .btn-glow:hover {
-            box-shadow: 0 0 25px rgba(249, 115, 22, 0.8);
-            transform: translateY(-2px);
         }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center relative">
+<body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
-    <!-- Background Effects -->
-    <div class="stripes-bg"></div>
-    <div class="scanline"></div>
+    <div class="ambient-glow"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 text-center px-4 max-w-2xl flex flex-col items-center">
+    <div class="relative z-10 text-center px-6 max-w-2xl">
+        <h1 class="error-code serif-text fade-in-up" style="animation-delay: 0.1s;">403</h1>
 
-        <svg class="w-32 h-32 mb-4 shield-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-        </svg>
+        <div class="divider fade-in-up" style="animation-delay: 0.3s;"></div>
 
-        <h1 class="text-403 mb-2">403</h1>
-
-        <h2 class="text-4xl font-bold mb-6 text-orange-400 fade-up" style="animation-delay: 0.3s;">
+        <h2 class="text-3xl font-light mb-4 serif-text tracking-wide fade-in-up" style="animation-delay: 0.5s;">
             Access Forbidden
         </h2>
 
-        <p class="text-xl text-stone-400 mb-10 fade-up" style="animation-delay: 0.6s;">
-            You don't have permission to access this realm. Let's find a path you're allowed to take.
+        <p class="text-lg text-slate-400 font-light mb-10 leading-relaxed fade-in-up" style="animation-delay: 0.7s;">
+            You lack the necessary credentials to view this directory. <br>Please verify your permissions or return.
         </p>
 
-        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 ease-out bg-orange-600 rounded-full btn-glow fade-up" style="animation-delay: 0.9s;">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Return Home
+        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-3 text-sm tracking-widest uppercase font-medium text-slate-300 rounded-sm btn-refined fade-in-up" style="animation-delay: 0.9s;">
+            Return to Origin
         </a>
     </div>
 

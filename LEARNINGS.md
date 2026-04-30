@@ -19,3 +19,4 @@
 * Django Error pages (404, 500, etc) can be cleanly overridden by creating corresponding HTML files inside templates and linking them in the main urlconf using `handler404`, `handler500`, etc.
 * To extend CKEditor functionalities such as adding external Youtube video embeds in Django, download the necessary CKEditor plugins to your static directory and configure `CKEDITOR_CONFIGS` in your settings to include `extraPlugins: 'youtube'` and add it to the toolbar.
 * Error pages can easily be made standalone (without a global header/footer) by omitting `{% extends 'base.html' %}` and providing a complete `<html>` document structure within the error template files.
+* Professional styling is achieved by minimizing harsh colors, relying on elegant typography combos (like `Cormorant Garamond` headers with `Inter` body text), and substituting chaotic animations with slow-breathing, low-opacity ambient glows.

@@ -6,205 +6,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found - 404</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background: #0f172a; /* Dark parchment/slate base */
+            background-color: #0f172a; /* Parchment dark */
             font-family: 'Inter', sans-serif;
             color: #f8fafc;
         }
 
-        /* Animated Background Gradient */
-        .bg-animation {
+        /* Subtle Atmospheric Glow */
+        .ambient-glow {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 40%, #020617 100%);
-            animation: rotateBg 30s linear infinite;
-            z-index: -2;
-        }
-
-        @keyframes rotateBg {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Floating Orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vw;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, rgba(15, 23, 42, 0) 70%);
+            animation: breathe 8s ease-in-out infinite alternate;
             z-index: -1;
-            animation: float 15s infinite ease-in-out alternate;
+            pointer-events: none;
         }
 
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: #4f46e5; /* Indigo */
-            top: 10%;
-            left: 20%;
-            animation-delay: 0s;
+        @keyframes breathe {
+            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: #eab308; /* Yellow */
-            bottom: 10%;
-            right: 20%;
-            animation-delay: -5s;
+        .serif-text {
+            font-family: 'Cormorant Garamond', serif;
         }
 
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: #ec4899; /* Pink */
-            top: 40%;
-            left: 60%;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 50px) scale(1.1); }
-            100% { transform: translate(-50px, 20px) scale(0.9); }
-        }
-
-        /* Glitch Effect on Text */
-        .glitch {
-            position: relative;
-            color: white;
+        .error-code {
             font-size: 10rem;
-            font-weight: 800;
+            font-weight: 300;
+            color: #3b82f6; /* Sepia/Accent blue */
             line-height: 1;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
-            animation: pulse-slow 4s infinite;
+            opacity: 0.8;
+            letter-spacing: -0.05em;
         }
 
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .divider {
+            width: 40px;
+            height: 1px;
+            background-color: #eab308; /* Forest/Gold */
+            margin: 2rem auto;
+            opacity: 0.5;
+        }
+
+        .btn-refined {
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             background: transparent;
         }
 
-        .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 red;
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        .btn-refined:hover {
+            border-color: #eab308;
+            color: #eab308;
+            background: rgba(234, 179, 8, 0.05);
+            transform: translateY(-2px);
         }
 
-        .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 blue;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(42px, 9999px, 44px, 0); }
-            5% { clip: rect(12px, 9999px, 59px, 0); }
-            10% { clip: rect(48px, 9999px, 29px, 0); }
-            15% { clip: rect(42px, 9999px, 73px, 0); }
-            20% { clip: rect(63px, 9999px, 27px, 0); }
-            25% { clip: rect(34px, 9999px, 55px, 0); }
-            30% { clip: rect(86px, 9999px, 73px, 0); }
-            35% { clip: rect(20px, 9999px, 20px, 0); }
-            40% { clip: rect(26px, 9999px, 60px, 0); }
-            45% { clip: rect(25px, 9999px, 66px, 0); }
-            50% { clip: rect(57px, 9999px, 98px, 0); }
-            55% { clip: rect(5px, 9999px, 46px, 0); }
-            60% { clip: rect(82px, 9999px, 31px, 0); }
-            65% { clip: rect(54px, 9999px, 27px, 0); }
-            70% { clip: rect(28px, 9999px, 99px, 0); }
-            75% { clip: rect(45px, 9999px, 69px, 0); }
-            80% { clip: rect(23px, 9999px, 85px, 0); }
-            85% { clip: rect(54px, 9999px, 84px, 0); }
-            90% { clip: rect(45px, 9999px, 47px, 0); }
-            95% { clip: rect(37px, 9999px, 20px, 0); }
-            100% { clip: rect(4px, 9999px, 91px, 0); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            5% { clip: rect(52px, 9999px, 74px, 0); }
-            10% { clip: rect(79px, 9999px, 85px, 0); }
-            15% { clip: rect(75px, 9999px, 5px, 0); }
-            20% { clip: rect(67px, 9999px, 61px, 0); }
-            25% { clip: rect(14px, 9999px, 79px, 0); }
-            30% { clip: rect(1px, 9999px, 66px, 0); }
-            35% { clip: rect(86px, 9999px, 30px, 0); }
-            40% { clip: rect(23px, 9999px, 98px, 0); }
-            45% { clip: rect(85px, 9999px, 72px, 0); }
-            50% { clip: rect(71px, 9999px, 75px, 0); }
-            55% { clip: rect(2px, 9999px, 48px, 0); }
-            60% { clip: rect(30px, 9999px, 16px, 0); }
-            65% { clip: rect(59px, 9999px, 50px, 0); }
-            70% { clip: rect(41px, 9999px, 62px, 0); }
-            75% { clip: rect(2px, 9999px, 82px, 0); }
-            80% { clip: rect(47px, 9999px, 73px, 0); }
-            85% { clip: rect(3px, 9999px, 27px, 0); }
-            90% { clip: rect(26px, 9999px, 55px, 0); }
-            95% { clip: rect(42px, 9999px, 97px, 0); }
-            100% { clip: rect(38px, 9999px, 49px, 0); }
-        }
-
-        @keyframes pulse-slow {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.02); opacity: 0.9; }
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-up {
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .btn-glow:hover {
-            box-shadow: 0 0 25px rgba(79, 70, 229, 0.8);
-            transform: translateY(-2px);
         }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center relative">
+<body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
-    <!-- Animated Background -->
-    <div class="bg-animation"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <div class="ambient-glow"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 text-center px-4 max-w-2xl">
-        <h1 class="glitch mb-4" data-text="404">404</h1>
+    <div class="relative z-10 text-center px-6 max-w-2xl">
+        <h1 class="error-code serif-text fade-in-up" style="animation-delay: 0.1s;">404</h1>
 
-        <h2 class="text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 fade-up" style="animation-delay: 0.3s;">
-            Lost in the Void
+        <div class="divider fade-in-up" style="animation-delay: 0.3s;"></div>
+
+        <h2 class="text-3xl font-light mb-4 serif-text tracking-wide fade-in-up" style="animation-delay: 0.5s;">
+            Page Not Found
         </h2>
 
-        <p class="text-xl text-gray-300 mb-10 fade-up" style="animation-delay: 0.6s;">
-            The page you are looking for has vanished into the digital ether. Let's get you back to familiar territory.
+        <p class="text-lg text-slate-400 font-light mb-10 leading-relaxed fade-in-up" style="animation-delay: 0.7s;">
+            The content you are seeking does not exist or has been moved. <br>Please verify the address or return to the beginning.
         </p>
 
-        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 ease-out bg-indigo-600 rounded-full btn-glow fade-up" style="animation-delay: 0.9s;">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Return Home
+        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-3 text-sm tracking-widest uppercase font-medium text-slate-300 rounded-sm btn-refined fade-in-up" style="animation-delay: 0.9s;">
+            Return to Origin
         </a>
     </div>
 
