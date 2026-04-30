@@ -1,44 +1,127 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - 403</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #1c1917; /* Dark stone */
+            font-family: 'Inter', sans-serif;
+            color: #fafaf9;
+        }
 
-{% block title %}Access Denied - 403{% endblock %}
+        /* Warning Stripes Background */
+        .stripes-bg {
+            position: absolute;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(249, 115, 22, 0.03),
+                rgba(249, 115, 22, 0.03) 20px,
+                rgba(0, 0, 0, 0) 20px,
+                rgba(0, 0, 0, 0) 40px
+            );
+            animation: slideStripes 30s linear infinite;
+            z-index: -2;
+        }
 
-{% block content %}
-<div class="min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
-    <div class="relative z-10">
-        <div class="flex items-center justify-center space-x-2">
-            <svg class="w-24 h-24 text-orange-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-            </svg>
-            <h1 class="text-9xl font-bold text-gray-800 dark:text-gray-100 tracking-widest relative" style="text-shadow: 0 0 15px rgba(249, 115, 22, 0.5);">
-                403
-            </h1>
-        </div>
-    </div>
+        @keyframes slideStripes {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
+        }
 
-    <div class="mt-8 z-10">
-        <h2 class="text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-4 animate-fade-in-up">Access Forbidden</h2>
-        <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+        /* Scanline effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(249, 115, 22, 0.2), transparent);
+            animation: scan 6s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { top: -100px; }
+            100% { top: 100vh; }
+        }
+
+        .shield-icon {
+            color: #f97316; /* Orange */
+            filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.6));
+            animation: pulseShield 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseShield {
+            0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.4)); }
+            100% { transform: scale(1.1); filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.8)); }
+        }
+
+        .text-403 {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -5px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-up {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.8);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex items-center justify-center relative">
+
+    <!-- Background Effects -->
+    <div class="stripes-bg"></div>
+    <div class="scanline"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center px-4 max-w-2xl flex flex-col items-center">
+
+        <svg class="w-32 h-32 mb-4 shield-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+        </svg>
+
+        <h1 class="text-403 mb-2">403</h1>
+
+        <h2 class="text-4xl font-bold mb-6 text-orange-400 fade-up" style="animation-delay: 0.3s;">
+            Access Forbidden
+        </h2>
+
+        <p class="text-xl text-stone-400 mb-10 fade-up" style="animation-delay: 0.6s;">
             You don't have permission to access this realm. Let's find a path you're allowed to take.
         </p>
 
-        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-3 text-lg font-medium text-white transition-all duration-300 ease-in-out transform bg-orange-500 rounded-full hover:bg-orange-600 hover:scale-105 hover:shadow-[0_0_20px_rgba(249,115,22,0.5)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 animate-fade-in-up" style="animation-delay: 0.4s;">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        <a href="{% url 'index' %}" class="inline-flex items-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 ease-out bg-orange-600 rounded-full btn-glow fade-up" style="animation-delay: 0.9s;">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
             Return Home
         </a>
     </div>
-</div>
 
-<style>
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0;
-    }
-</style>
-{% endblock %}
+</body>
+</html>
