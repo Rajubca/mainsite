@@ -47,7 +47,7 @@ class SiteSettings(models.Model):
     def __str__(self):
         return "Global Site Settings"
 
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Station(models.Model):
     ANIMATION_CHOICES = [
@@ -68,7 +68,7 @@ class Station(models.Model):
     order = models.PositiveIntegerField(default=0, help_text="The sequence number on the journey (0, 1, 2, etc.)")
     title = models.CharField(max_length=200, help_text="e.g. 'The Gateway'")
     eyebrow = models.CharField(max_length=100, blank=True, help_text="e.g. 'Shiva Services - Est 2024'")
-    content = RichTextUploadingField(help_text="The main HTML content of the station card")
+    content = CKEditor5Field(help_text="The main HTML content of the station card")
 
     # Grid Position on the 2D Map Canvas
     x_position = models.IntegerField(default=0, help_text="X Coordinate in vw (e.g. 0, 100, 200). Negative moves the camera right.")
