@@ -173,6 +173,9 @@ CKEDITOR_5_CONFIGS = {
             'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties' ],
             'format': [ 'table', 'tableCell', 'tableRow' ]
         },
+        'mediaEmbed': {
+            'previewsInData': True
+        },
         'heading' : {
             'options': [
                 { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
