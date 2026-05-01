@@ -26,13 +26,35 @@
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, rgba(239, 68, 68, 0.03) 0%, rgba(15, 23, 42, 0) 70%);
             animation: breathe 10s ease-in-out infinite alternate;
-            z-index: -1;
+            z-index: -2;
             pointer-events: none;
         }
 
         @keyframes breathe {
             0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.95); }
             100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Animated Site Name Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 25vw;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.02);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            user-select: none;
+            animation: watermarkDrift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes watermarkDrift {
+            0% { transform: translate(-50%, -45%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -55%) scale(1.05); opacity: 1; }
         }
 
         .serif-text {
@@ -83,6 +105,7 @@
 <body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
     <div class="ambient-glow"></div>
+    <div class="watermark">Shiva Services</div>
 
     <div class="relative z-10 text-center px-6 max-w-2xl">
         <h1 class="error-code serif-text fade-in-up" style="animation-delay: 0.1s;">500</h1>
