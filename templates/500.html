@@ -28,9 +28,18 @@
         .font-cormorant { font-family: 'Cormorant Garamond', serif; }
         .font-sans { font-family: 'Inter', sans-serif; }
 
+        .site-name {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 2rem;
+        }
+
         .huge-number {
-            font-size: clamp(8rem, 25vw, 20rem);
-            line-height: 0.8;
+            font-size: clamp(6rem, 20vw, 15rem);
+            line-height: 1;
             font-weight: 300;
             color: transparent;
             -webkit-text-stroke: 1px rgba(239, 68, 68, 0.2);
@@ -38,26 +47,14 @@
             -webkit-background-clip: text;
             background-clip: text;
             user-select: none;
+            margin: 0 auto;
         }
 
-        .spine-text {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%) rotate(90deg);
-            transform-origin: right center;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            letter-spacing: 0.5em;
-            font-size: 0.8rem;
-            color: rgba(239,68,68,0.3);
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .vertical-divider {
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--accent-red), transparent);
+        .horizontal-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent-red), transparent);
+            margin: 2rem auto;
             opacity: 0.5;
         }
 
@@ -65,7 +62,8 @@
             position: relative;
             display: inline-flex;
             align-items: center;
-            padding: 0.75rem 2rem;
+            justify-content: center;
+            padding: 0.75rem 2.5rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             letter-spacing: 0.1em;
@@ -83,7 +81,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--accent-red);
             transform: scaleX(0);
-            transform-origin: right;
+            transform-origin: center;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: -1;
         }
@@ -95,7 +93,6 @@
 
         .journal-btn:hover::before {
             transform: scaleX(1);
-            transform-origin: left;
         }
 
         .fade-in-element {
@@ -107,36 +104,59 @@
         @keyframes journalFadeIn {
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20vw;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.015);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            animation: watermarkPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes watermarkPulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center relative">
+<body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
-    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_30%_50%,rgba(239,68,68,0.03),transparent_50%)] pointer-events-none"></div>
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(239,68,68,0.03),transparent_60%)] pointer-events-none"></div>
 
-    <div class="spine-text">SHIVA SERVICES — ERROR 500</div>
+    <div class="watermark">SHIVA SERVICES</div>
 
-    <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
+    <div class="relative z-10 w-full max-w-3xl mx-auto px-6 text-center flex flex-col items-center justify-center">
 
-        <div class="flex-shrink-0 fade-in-element" style="animation-delay: 0.2s;">
+        <div class="site-name fade-in-element" style="animation-delay: 0.1s;">
+            Shiva Services
+        </div>
+
+        <div class="fade-in-element" style="animation-delay: 0.3s;">
             <h1 class="huge-number font-cormorant tracking-tighter">500</h1>
         </div>
 
-        <div class="hidden md:block h-64 vertical-divider fade-in-element" style="animation-delay: 0.4s;"></div>
+        <div class="horizontal-divider fade-in-element" style="animation-delay: 0.5s;"></div>
 
-        <div class="max-w-lg text-center md:text-left">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-light mb-6 font-cormorant italic fade-in-element" style="animation-delay: 0.6s;">
-                Internal System Disturbance
-            </h2>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-light mb-6 font-cormorant italic fade-in-element" style="animation-delay: 0.7s;">
+            Internal System Disturbance
+        </h2>
 
-            <p class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light fade-in-element" style="animation-delay: 0.8s;">
-                An unexpected condition was encountered within the archives. Our architectural team has been notified. Please allow a moment before attempting your query again.
-            </p>
+        <p class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light fade-in-element max-w-xl mx-auto" style="animation-delay: 0.9s;">
+            An unexpected condition was encountered within the archives. Our architectural team has been notified. Please allow a moment before attempting your query again.
+        </p>
 
-            <div class="fade-in-element" style="animation-delay: 1.0s;">
-                <a href="{% url 'index' %}" class="journal-btn">
-                    Return to Journal
-                </a>
-            </div>
+        <div class="fade-in-element" style="animation-delay: 1.1s;">
+            <a href="{% url 'index' %}" class="journal-btn">
+                Return to Journal
+            </a>
         </div>
 
     </div>

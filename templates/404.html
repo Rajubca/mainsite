@@ -7,7 +7,6 @@
     <title>SHIVA | Page Not Found</title>
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-    <!-- Fonts matching the journal -->
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;700&display=swap" rel="stylesheet"/>
     <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
 
@@ -16,7 +15,6 @@
             --bg-color: #0b1120;
             --accent-gold: #eab308;
             --text-ink: #f8fafc;
-            --text-muted: #94a3b8;
         }
 
         body {
@@ -24,16 +22,24 @@
             background-color: var(--bg-color);
             color: var(--text-ink);
             font-family: 'Crimson Pro', serif;
-            overflow: hidden; /* Prevent scrolling on error pages */
+            overflow: hidden;
         }
 
-        /* Editorial Typography */
         .font-cormorant { font-family: 'Cormorant Garamond', serif; }
         .font-sans { font-family: 'Inter', sans-serif; }
 
+        .site-name {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 2rem;
+        }
+
         .huge-number {
-            font-size: clamp(8rem, 25vw, 20rem);
-            line-height: 0.8;
+            font-size: clamp(6rem, 20vw, 15rem);
+            line-height: 1;
             font-weight: 300;
             color: transparent;
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
@@ -41,37 +47,23 @@
             -webkit-background-clip: text;
             background-clip: text;
             user-select: none;
+            margin: 0 auto;
         }
 
-        /* The vertical spine watermark */
-        .spine-text {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%) rotate(90deg);
-            transform-origin: right center;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            letter-spacing: 0.5em;
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.2);
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        /* Golden Divider Line */
-        .vertical-divider {
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
+        .horizontal-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
+            margin: 2rem auto;
             opacity: 0.5;
         }
 
-        /* Button styling matching the theme */
         .journal-btn {
             position: relative;
             display: inline-flex;
             align-items: center;
-            padding: 0.75rem 2rem;
+            justify-content: center;
+            padding: 0.75rem 2.5rem;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             letter-spacing: 0.1em;
@@ -89,7 +81,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--accent-gold);
             transform: scaleX(0);
-            transform-origin: right;
+            transform-origin: center;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: -1;
         }
@@ -101,10 +93,8 @@
 
         .journal-btn:hover::before {
             transform: scaleX(1);
-            transform-origin: left;
         }
 
-        /* Entrance Animations */
         .fade-in-element {
             opacity: 0;
             transform: translateY(20px);
@@ -114,41 +104,60 @@
         @keyframes journalFadeIn {
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Central Animated Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20vw;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.015);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            animation: watermarkPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes watermarkPulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+        }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center relative">
+<body class="h-screen w-screen flex flex-col items-center justify-center relative">
 
-    <!-- Subtle atmospheric light behind content -->
-    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_30%_50%,rgba(59,130,246,0.03),transparent_50%)] pointer-events-none"></div>
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.03),transparent_60%)] pointer-events-none"></div>
 
-    <!-- Editorial Spine Watermark -->
-    <div class="spine-text">SHIVA SERVICES — ERROR 404</div>
+    <div class="watermark">SHIVA SERVICES</div>
 
-    <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
+    <div class="relative z-10 w-full max-w-3xl mx-auto px-6 text-center flex flex-col items-center justify-center">
 
-        <!-- Left Side: Architectural Typography -->
-        <div class="flex-shrink-0 fade-in-element" style="animation-delay: 0.2s;">
+        <div class="site-name fade-in-element" style="animation-delay: 0.1s;">
+            Shiva Services
+        </div>
+
+        <div class="fade-in-element" style="animation-delay: 0.3s;">
             <h1 class="huge-number font-cormorant tracking-tighter">404</h1>
         </div>
 
-        <!-- Center: Vertical Divider (hidden on mobile) -->
-        <div class="hidden md:block h-64 vertical-divider fade-in-element" style="animation-delay: 0.4s;"></div>
+        <div class="horizontal-divider fade-in-element" style="animation-delay: 0.5s;"></div>
 
-        <!-- Right Side: Editorial Content -->
-        <div class="max-w-lg text-center md:text-left">
-            <h2 class="text-3xl md:text-4xl lg:text-5xl font-light mb-6 font-cormorant italic fade-in-element" style="animation-delay: 0.6s;">
-                Lost in the Archive
-            </h2>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-light mb-6 font-cormorant italic fade-in-element" style="animation-delay: 0.7s;">
+            Lost in the Archive
+        </h2>
 
-            <p class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light fade-in-element" style="animation-delay: 0.8s;">
-                The curatorial path you are attempting to follow does not exist within our current volumes. The page may have been moved, or perhaps never existed.
-            </p>
+        <p class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light fade-in-element max-w-xl mx-auto" style="animation-delay: 0.9s;">
+            The curatorial path you are attempting to follow does not exist within our current volumes. The page may have been moved, or perhaps never existed.
+        </p>
 
-            <div class="fade-in-element" style="animation-delay: 1.0s;">
-                <a href="{% url 'index' %}" class="journal-btn">
-                    Return to Journal
-                </a>
-            </div>
+        <div class="fade-in-element" style="animation-delay: 1.1s;">
+            <a href="{% url 'index' %}" class="journal-btn">
+                Return to Journal
+            </a>
         </div>
 
     </div>
