@@ -22,23 +22,25 @@
             background-color: var(--bg-color);
             color: var(--text-ink);
             font-family: 'Crimson Pro', serif;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .font-cormorant { font-family: 'Cormorant Garamond', serif; }
         .font-sans { font-family: 'Inter', sans-serif; }
 
+        /* Highly prominent, elegant, fluid site name */
         .site-name {
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.3em;
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 2rem;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: clamp(1rem, 3vh, 3rem);
+            font-weight: 300;
         }
 
         .huge-number {
-            font-size: clamp(6rem, 20vw, 15rem);
+            font-size: clamp(6rem, 25vw, 18rem);
             line-height: 1;
             font-weight: 300;
             color: transparent;
@@ -51,10 +53,10 @@
         }
 
         .horizontal-divider {
-            width: 80px;
+            width: clamp(60px, 15vw, 120px);
             height: 1px;
             background: linear-gradient(to right, transparent, var(--accent-gold), transparent);
-            margin: 2rem auto;
+            margin: clamp(1.5rem, 4vh, 3rem) auto;
             opacity: 0.5;
         }
 
@@ -63,9 +65,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 2.5rem;
+            padding: clamp(0.6rem, 2vh, 1rem) clamp(1.5rem, 4vw, 3rem);
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--accent-gold);
@@ -73,6 +75,7 @@
             border: 1px solid rgba(234, 179, 8, 0.3);
             overflow: hidden;
             transition: all 0.4s ease;
+            margin-top: clamp(1rem, 3vh, 2.5rem);
         }
 
         .journal-btn::before {
@@ -105,7 +108,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Central Animated Watermark */
         .watermark {
             position: absolute;
             top: 50%;
@@ -128,13 +130,13 @@
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-center relative">
+<body class="min-h-[100dvh] w-screen flex flex-col items-center justify-center relative py-12">
 
     <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.03),transparent_60%)] pointer-events-none"></div>
 
     <div class="watermark">SHIVA SERVICES</div>
 
-    <div class="relative z-10 w-full max-w-3xl mx-auto px-6 text-center flex flex-col items-center justify-center">
+    <div class="relative z-10 w-full max-w-4xl mx-auto px-6 text-center flex flex-col items-center justify-center">
 
         <div class="site-name fade-in-element" style="animation-delay: 0.1s;">
             Shiva Services
@@ -146,11 +148,11 @@
 
         <div class="horizontal-divider fade-in-element" style="animation-delay: 0.5s;"></div>
 
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-light mb-6 font-cormorant italic fade-in-element" style="animation-delay: 0.7s;">
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-light mb-4 font-cormorant italic fade-in-element" style="animation-delay: 0.7s;">
             Lost in the Archive
         </h2>
 
-        <p class="text-lg md:text-xl text-slate-400 mb-10 leading-relaxed font-light fade-in-element max-w-xl mx-auto" style="animation-delay: 0.9s;">
+        <p class="text-base md:text-lg lg:text-xl text-slate-400 leading-relaxed font-light fade-in-element max-w-2xl mx-auto" style="animation-delay: 0.9s;">
             The curatorial path you are attempting to follow does not exist within our current volumes. The page may have been moved, or perhaps never existed.
         </p>
 
