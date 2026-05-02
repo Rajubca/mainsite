@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SHIVA | Access Forbidden</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;700&display=swap" rel="stylesheet"/>
+    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0b1120;
+            --accent-orange: #f97316;
+            --text-ink: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-ink);
+            font-family: 'Crimson Pro', serif;
+            overflow-x: hidden;
+        }
+
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+
+        .site-name {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: clamp(1rem, 3vh, 3rem);
+            font-weight: 300;
+        }
+
+        .huge-number {
+            font-size: clamp(6rem, 25vw, 18rem);
+            line-height: 1;
+            font-weight: 300;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(249, 115, 22, 0.2);
+            background: linear-gradient(to bottom, rgba(249,115,22,0.6), rgba(249,115,22,0.1));
+            -webkit-background-clip: text;
+            background-clip: text;
+            user-select: none;
+            margin: 0 auto;
+        }
+
+        .horizontal-divider {
+            width: clamp(60px, 15vw, 120px);
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent-orange), transparent);
+            margin: clamp(1.5rem, 4vh, 3rem) auto;
+            opacity: 0.5;
+        }
+
+        .journal-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(0.6rem, 2vh, 1rem) clamp(1.5rem, 4vw, 3rem);
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-orange);
+            background: transparent;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin-top: clamp(1rem, 3vh, 2.5rem);
+        }
+
+        .journal-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--accent-orange);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .journal-btn:hover {
+            color: var(--bg-color);
+            border-color: var(--accent-orange);
+        }
+
+        .journal-btn:hover::before {
+            transform: scaleX(1);
+        }
+
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: journalFadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes journalFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20vw;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.015);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            animation: watermarkPulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes watermarkPulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="min-h-[100dvh] w-screen flex flex-col items-center justify-center relative py-12">
+
+    <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(249,115,22,0.03),transparent_60%)] pointer-events-none"></div>
+
+    <div class="watermark">SHIVA SERVICES</div>
+
+    <div class="relative z-10 w-full max-w-4xl mx-auto px-6 text-center flex flex-col items-center justify-center">
+
+        <div class="site-name fade-in-element" style="animation-delay: 0.1s;">
+            Shiva Services
+        </div>
+
+        <div class="fade-in-element" style="animation-delay: 0.3s;">
+            <h1 class="huge-number font-cormorant tracking-tighter">403</h1>
+        </div>
+
+        <div class="horizontal-divider fade-in-element" style="animation-delay: 0.5s;"></div>
+
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-light mb-4 font-cormorant italic fade-in-element" style="animation-delay: 0.7s;">
+            Restricted Corridor
+        </h2>
+
+        <p class="text-base md:text-lg lg:text-xl text-slate-400 leading-relaxed font-light fade-in-element max-w-2xl mx-auto" style="animation-delay: 0.9s;">
+            Access to this section of the journal is forbidden. You lack the necessary credentials to view the restricted archives.
+        </p>
+
+        <div class="fade-in-element" style="animation-delay: 1.1s;">
+            <a href="{% url 'index' %}" class="journal-btn">
+                Return to Journal
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
