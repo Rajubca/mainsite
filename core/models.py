@@ -31,7 +31,12 @@ class SiteSettings(models.Model):
         verbose_name = 'Site Settings'
         verbose_name_plural = 'Site Settings'
 
+
+    # Live Chat Settings
+    tawk_to_property_id = models.CharField(max_length=100, blank=True, null=True, help_text="Enter your Tawk.to Property ID to enable live chat (e.g. 60d5b4a...). Leave blank to disable.")
+
     def save(self, *args, **kwargs):
+
         # Force this to be a singleton
         self.pk = 1
         super(SiteSettings, self).save(*args, **kwargs)
