@@ -177,6 +177,16 @@ CKEDITOR_5_CONFIGS = {
         'mediaEmbed': {
             'previewsInData': True
         },
+                'htmlSupport': {
+            'allow': [
+                {
+                    'name': '/.*/',
+                    'attributes': True,
+                    'classes': True,
+                    'styles': True
+                }
+            ]
+        },
         'heading' : {
             'options': [
                 { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
