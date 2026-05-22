@@ -32,3 +32,4 @@
 * Standard third-party widgets like Tawk.to require their scripts to be placed immediately before the closing `</body>` tag to prevent blocking the initial rendering of the webpage.
 * To make third-party tags like Tawk.to configurable, define a field on a global singleton settings model (like `SiteSettings`), expose that model to templates via a custom `context_processor` in `settings.py`, and wrap the `<script>` in an `{% if site_settings.tawk_to_property_id %}` tag.
 * To clean up a git repository that accidentally tracked compiled files or environment assets, append the required wildcard filters to `.gitignore` and execute `git rm --cached -r <folder/file>` to purge them from git's index while keeping the local files intact.
+* Using `django-import-export` provides immediate GUI functionality in the Django Admin for bulk CSV/JSON import and export simply by inheriting from `ImportExportModelAdmin` instead of `admin.ModelAdmin`.

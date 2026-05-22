@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "core",
     "blog",
     "django_ckeditor_5",
-
+    "import_export",
 ]
 
 MIDDLEWARE = [
