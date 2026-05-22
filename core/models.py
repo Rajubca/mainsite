@@ -35,6 +35,18 @@ class SiteSettings(models.Model):
     # Live Chat Settings
     tawk_to_property_id = models.CharField(max_length=100, blank=True, null=True, help_text="Enter your Tawk.to Property ID to enable live chat (e.g. 60d5b4a...). Leave blank to disable.")
 
+    # Concurrent Login Settings
+    LOGIN_CHOICES = [
+        (0, 'Unlimited Logins (Default)'),
+        (1, 'Single Login (Logs out previous device)'),
+        (2, 'Double Login (Max 2 devices)'),
+    ]
+    max_concurrent_logins = models.IntegerField(
+        choices=LOGIN_CHOICES,
+        default=0,
+        help_text="Restrict how many active sessions a single user account can have simultaneously. If exceeded, the oldest session is destroyed."
+    )
+
     def save(self, *args, **kwargs):
 
         # Force this to be a singleton
@@ -132,3 +144,17 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.name}"
+
+from django.conf import settings
+from django.contrib.sessions.models import Session
+
+class UserActiveSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    session_key = models.CharField(max_length=40, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.session_key}"
