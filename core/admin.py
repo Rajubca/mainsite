@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from .models import Station, SiteSettings, ContactMessage
+from import_export.admin import ImportExportModelAdmin
 
 from django.forms.widgets import Input
 from django import forms
@@ -24,7 +25,7 @@ class StationForm(forms.ModelForm):
         }
 
 @admin.register(Station)
-class StationAdmin(admin.ModelAdmin):
+class StationAdmin(ImportExportModelAdmin):
     form = StationForm
 
 
@@ -76,7 +77,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
         return False
 
 @admin.register(ContactMessage)
-class ContactMessageAdmin(admin.ModelAdmin):
+class ContactMessageAdmin(ImportExportModelAdmin):
     list_display = ('name', 'email', 'created_at')
     readonly_fields = ('name', 'email', 'message', 'created_at')
 

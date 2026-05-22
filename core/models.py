@@ -31,7 +31,24 @@ class SiteSettings(models.Model):
         verbose_name = 'Site Settings'
         verbose_name_plural = 'Site Settings'
 
+
+    # Live Chat Settings
+    tawk_to_property_id = models.CharField(max_length=100, blank=True, null=True, help_text="Enter your Tawk.to Property ID to enable live chat (e.g. 60d5b4a...). Leave blank to disable.")
+
+    # Concurrent Login Settings
+    LOGIN_CHOICES = [
+        (0, 'Unlimited Logins (Default)'),
+        (1, 'Single Login (Logs out previous device)'),
+        (2, 'Double Login (Max 2 devices)'),
+    ]
+    max_concurrent_logins = models.IntegerField(
+        choices=LOGIN_CHOICES,
+        default=0,
+        help_text="Restrict how many active sessions a single user account can have simultaneously. If exceeded, the oldest session is destroyed."
+    )
+
     def save(self, *args, **kwargs):
+
         # Force this to be a singleton
         self.pk = 1
         super(SiteSettings, self).save(*args, **kwargs)
@@ -47,7 +64,7 @@ class SiteSettings(models.Model):
     def __str__(self):
         return "Global Site Settings"
 
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Station(models.Model):
     ANIMATION_CHOICES = [
@@ -68,7 +85,7 @@ class Station(models.Model):
     order = models.PositiveIntegerField(default=0, help_text="The sequence number on the journey (0, 1, 2, etc.)")
     title = models.CharField(max_length=200, help_text="e.g. 'The Gateway'")
     eyebrow = models.CharField(max_length=100, blank=True, help_text="e.g. 'Shiva Services - Est 2024'")
-    content = RichTextUploadingField(help_text="The main HTML content of the station card")
+    content = CKEditor5Field('Text', config_name='extends', help_text="The main HTML content of the station card")
 
     # Grid Position on the 2D Map Canvas
     x_position = models.IntegerField(default=0, help_text="X Coordinate in vw (e.g. 0, 100, 200). Negative moves the camera right.")
@@ -127,3 +144,17 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.name}"
+
+from django.conf import settings
+from django.contrib.sessions.models import Session
+
+class UserActiveSession(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    session_key = models.CharField(max_length=40, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.session_key}"

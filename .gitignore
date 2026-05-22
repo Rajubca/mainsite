@@ -1,3 +1,24 @@
 venv/
 staticfiles/
 node_modules/
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Node
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.venv
+env/

@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.text import slugify
 
 class Category(models.Model):
@@ -21,7 +21,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='posts')
-    content = RichTextUploadingField()
+    content = CKEditor5Field('Text', config_name='extends')
     author = models.CharField(max_length=100)
     created_date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
